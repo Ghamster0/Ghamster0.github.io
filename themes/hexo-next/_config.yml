@@ -572,7 +572,7 @@ gitment:
 gitalk:
   enable: true
   github_id: xyty007 # Github repo owner
-  repo: MyBlogComments.Hexo # Repository name to store issues.
+  repo: xyty007.github.io # Repository name to store issues.
   client_id: 89a8749bb98c4612ca8e # Github Application Client ID
   client_secret: 2a07e38f4612566c82d6865e3bf168da1265cacc # Github Application Client Secret
   admin_user: xyty007 # GitHub repo owner and collaborators, only these guys can initialize github issues
