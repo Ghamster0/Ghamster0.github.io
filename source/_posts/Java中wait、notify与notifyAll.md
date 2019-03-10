@@ -166,7 +166,6 @@ Process finished with exit code 0
 > 对于本程序而言，“合适的线程”是指：BtoR的notify必须唤醒RtoG，RtoG的notify必须唤醒GtoB，GtoB的notify必须唤醒BtoR
 
 ### one more thing  
-#### 现象  
 如果对测试代码稍作修改会发生有趣的事情：
 1. 将`Critical`对象的`color`属性初始值设为`Color.B`（12行）
 2. 在`main`方法的每个`exec.execute()`方法后插入`TimeUnit.SECONDS.sleep(1);`，插入后代码如下：  
@@ -197,7 +196,8 @@ public static void main(String[] args) throws InterruptedException {
   - Wait: Modifier G -> B, Current color: B
   + Resume from wait: Modifier B -> R, Current color: B
 ```
-而程序不会出现死锁！
+程序并未出现死锁！似乎BtoR的`notify`总会唤醒RtoG，RtoG会唤醒GtoB，GtoB会唤醒BtoR
+换言之，`notify`被调用时，唤醒的线程不是随机的，而是所有阻塞的线程中，最早调用`wait`的那个
 
 #### 测试  
 > 测试环境：window x64，jdk11  
