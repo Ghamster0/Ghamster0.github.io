@@ -81,3 +81,10 @@ deploy:
   type: git
   repo: https://github.com/xyty007/xyty007.github.io
   branch: master
+
+# Configration for Theme-Next
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 20
