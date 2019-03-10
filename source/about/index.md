@@ -1,5 +1,6 @@
 ---
 title: Crazy Rookie
+comments: false
 date: 2019-02-19 11:01:25
 ---
 
