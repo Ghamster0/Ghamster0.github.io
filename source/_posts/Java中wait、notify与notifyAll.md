@@ -1,13 +1,12 @@
 ---
 title: Java中wait、notify与notifyAll
-date: 2019-03-10 15:43:03
 tags:
 - Java
 - 多线程
+date: 2019-03-10 15:43:03
 ---
-## Java中wait、notify与notifyAll
 
-### 概述  
+## 概述  
 Java中可使用`wait`和`notify`(或`notifyAll`)方法同步对临界资源的访问  
 这些方法在Object类中定义，因此可以在任何对象上调用  
 在对象上调用`wait`方法使线程阻塞，在对象上调用`notify`或`notifyAll`会唤醒之前在该对象上调用`wait`阻塞的线程  
@@ -15,17 +14,17 @@ Java中可使用`wait`和`notify`(或`notifyAll`)方法同步对临界资源的�
 
 <!-- more -->
 
-### wait  
+## wait  
 - 阻塞当前线程，释放锁
 - `wait()`或`wait(0)`，为无限期阻塞（两者完全相同）；`wait(long timeoutMillis)`或`wait(long timeoutMillis, int nanos)`,若在参数指定时间内没有被唤醒或打断，自动恢复执行
 - 可以被`notify`或`notifyAll`唤醒
 - 可以被`interrupt`方法打断，抛出`InterruptedException`  
 
-### notify & notifyAll  
+## notify & notifyAll  
 - `notify`: 唤醒一个在该对象上调用`wait`方法阻塞的线程
 - `notifyAll`: 唤醒所有在该对象上调用`wait`方法阻塞的线程  
 
-### notify与notifyAll测试  
+## notify与notifyAll测试  
 `notify`相对于`notifyAll`方法是一种性能优化，因为`notify`只会唤醒一个线程，但`notifyAll`会唤醒所有等待的线程，使他们竞争cpu；但同时，使用`notify`你必须确定被唤醒的是合适的线程  
 
 > 下面的测试代码展示了“必须唤醒合适线程的问题”  
@@ -165,7 +164,7 @@ Process finished with exit code 0
 
 > 对于本程序而言，“合适的线程”是指：BtoR的notify必须唤醒RtoG，RtoG的notify必须唤醒GtoB，GtoB的notify必须唤醒BtoR
 
-### one more thing  
+## one more thing  
 如果对测试代码稍作修改会发生有趣的事情：
 1. 将`Critical`对象的`color`属性初始值设为`Color.B`（12行）
 2. 在`main`方法的每个`exec.execute()`方法后插入`TimeUnit.SECONDS.sleep(1);`，插入后代码如下：  
@@ -199,7 +198,7 @@ public static void main(String[] args) throws InterruptedException {
 程序并未出现死锁！似乎BtoR的`notify`总会唤醒RtoG，RtoG会唤醒GtoB，GtoB会唤醒BtoR
 换言之，`notify`被调用时，唤醒的线程不是随机的，而是所有阻塞的线程中，最早调用`wait`的那个
 
-#### 测试  
+### 测试  
 > 测试环境：window x64，jdk11  
 
 - 内部类`WaitAndNotify`实现了`Runnable`接口，构造方法需要传入一个`Object`对象（o）
@@ -289,7 +288,7 @@ WAN id=4 call notify
 
 Process finished with exit code 0
 ```
-#### 结论  
+### 结论  
 显然，在本平台上调用`notify`方法时，被唤醒的永远是最早调用`wait`方法阻塞的线程，但这个结论是否具有普遍性？
 
 jdk文档对于notify的描述如下：
