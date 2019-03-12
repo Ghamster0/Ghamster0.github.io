@@ -56,6 +56,7 @@ theme: hexo-next
 ##### theme-next配置
 
 ###### 主题模式由Muse切换为Gemini
+修改hexo-next配置文件 `<next_root>/_config.yml`
 ```yml
 # scheme: Muse
 scheme: Gemini
@@ -93,9 +94,11 @@ $ hexo new page <page_name>
 生成`<hexo_root>/source/about/index.md`和`<hexo_root>/source/tags/index.md`文件，在about下的`index.md`中添加个人信息；修改tags下的`index.md`，在 Front-matter 中添加 `type: tags`
 
 修改hexo-next根目录下的配置文件 `<next_root>/_config.yml`，菜单栏配置格式：`Key: /link/ || icon`
-| key | link | icon|
-| --- | --- | --- |
-| 名称 | uri， 即菜单项对应页面链接：<homepage>/<link> | 使用的FontAwesome图标名称 |  
+
+| key | link | icon |
+| - | - | - |
+| 名称 | uri， 即菜单项对应页面链接：http://[home_page]/[link] | 使用的FontAwesome图标名称 |
+
 修改为
 ```yml
 menu:
@@ -162,7 +165,7 @@ social_icons:
 将项目代码push到source分区
 
 #### 部署
-使用git部署时，每次deploy会使用生成的新文件强制覆盖远端<git_repo>的master分支中的旧文件
+使用git部署时，每次deploy会使用生成的新文件强制覆盖远端`<git_repo>`的master分支中的旧文件
 安装git部署插件
 ```bash
 $ npm install hexo-deployer-git --save
@@ -185,15 +188,17 @@ $ hexo deploy #或 hexo d
 > 评论功能使用Gitalk服务实现
 
 创建github验证应用：[Register a new OAuth application](https://github.com/settings/applications/new)，需要填写的项目如下：
+
 | 项目 | 描述 |
-| --- | --- |
+| - | - |
 | Application name | 应用名称，会在登录评论的登录验证界面展示 |
 | Homepage URL | 可以填博客主页 |
 | Application description | 应用简介 |
-| Authorization callback URL | 必须填该博客主页 |  
+| Authorization callback URL | 必须填该博客主页 |
+
 应用创建完成后，会获得Client ID和Client Secret
 
-使用存放博客的<git_repo>存储评论数据，修改hexo-next配置文件 `<next_root>/_config.yml`如下(admin_user可以和github_id相同)
+使用存放博客的`<git_repo>`存储评论数据，修改hexo-next配置文件 `<next_root>/_config.yml`如下(admin_user可以和github_id相同)
 ```yml
 gitalk:
   enable: true
