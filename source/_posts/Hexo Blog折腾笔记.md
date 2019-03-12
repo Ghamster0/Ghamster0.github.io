@@ -5,7 +5,6 @@ tags:
 - hexo
 - theme next
 ---
-# Hexo Blog折腾笔记
 
 ## 环境配置
 安装git
@@ -20,6 +19,8 @@ $ npm config set registry <https://mirror.url>
 ```bash
 $ npm install -g hexo-cli
 ```
+
+<!-- more -->
 
 ## 建站
 创建blog（基本目录结构文件）
