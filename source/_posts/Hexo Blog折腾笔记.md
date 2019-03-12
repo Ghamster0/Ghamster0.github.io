@@ -213,6 +213,7 @@ gitalk:
 参考CSDN博客：[Hexo个人博客站点被百度谷歌收录](https://blog.csdn.net/qq_32454537/article/details/79482914)，原文已经非常详尽，这里只做搬运
 
 > 常用指令：
+
 ```bash
 $ hexo init [folder] # 新建一个网站。如果没有设置 folder ，Hexo 默认在目前的文件夹建立网站
 $ hexo new [layout] <title> # 新建一篇文章。如果没有设置 layout ，默认使用 _config.yml 中的 default_layout 参数代替
