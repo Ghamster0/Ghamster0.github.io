@@ -188,7 +188,7 @@ site_state: true
 # Value before `||` delimeter is the target permalink.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.
 social:
-  GitHub: https://github.com/xyty007 || github
+  GitHub: https://github.com/Ghamster0 || github
   E-Mail: xyty2012@outlook.com || envelope
   知乎: https://www.zhihu.com/people/initial-75 || book
   #Weibo: https://weibo.com/yourname || weibo
@@ -603,11 +603,11 @@ gitment:
 # Demo: https://gitalk.github.io
 gitalk:
   enable: true
-  github_id: xyty007 # Github repo owner
-  repo: xyty007.github.io # Repository name to store issues
+  github_id: Ghamster0 # Github repo owner
+  repo: Ghamster0.github.io # Repository name to store issues
   client_id: 89a8749bb98c4612ca8e # Github Application Client ID
   client_secret: 2a07e38f4612566c82d6865e3bf168da1265cacc # Github Application Client Secret
-  admin_user: xyty007 # GitHub repo owner and collaborators, only these guys can initialize github issues
+  admin_user: Ghamster0 # GitHub repo owner and collaborators, only these guys can initialize github issues
   distraction_free_mode: true # Facebook-like distraction free mode
   # Gitalk's display language depends on user's browser or system environment
   # If you want everyone visiting your site to see a uniform language, you can set a force language value

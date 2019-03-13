@@ -13,7 +13,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://xyty007.github.io
+url: https://ghamster0.github.io
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -79,7 +79,7 @@ theme: hexo-next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/xyty007/xyty007.github.io
+  repo: https://github.com/Ghamster0/Ghamster0.github.io
   branch: master
 
 # Configration for Theme-Next
