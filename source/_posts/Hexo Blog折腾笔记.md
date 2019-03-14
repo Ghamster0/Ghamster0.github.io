@@ -31,10 +31,10 @@ $ cd <folder>
 $ npm install
 ```
 
-### 配置和运行
+## 配置
 > 当前已经可以使用`hexo server`命令运行博客查看效果
 
-#### 配置hexo
+### 配置hexo
 修改hexo配置文件`<blog_root>/_config.yml`
 ```yml
 title: #网站标题
@@ -42,10 +42,10 @@ subtitle: #网站副标题
 author: #作者名字
 ```
 
-#### 配置主题
+### 配置主题
 > 使用hexo主题：Theme-next，文档地址：[https://theme-next.org/](https://theme-next.org/)
 
-##### theme-next安装
+#### theme-next安装
 下载next主题文件：[https://github.com/theme-next/hexo-theme-next/archive/master.zip](https://github.com/theme-next/hexo-theme-next/archive/master.zip)，或使用git：`git clone https://github.com/theme-next/hexo-theme-next themes/next`
 
 将文件解压，重命名为 hexo-next，拷贝至`<blog_root>/themes`目录下
@@ -55,14 +55,14 @@ author: #作者名字
 theme: hexo-next
 ```
 
-##### 切换主题模式
+#### 切换主题模式
 主题模式由Muse切换为Gemini，修改hexo-next配置文件 `<next_root>/_config.yml`
 ```yml
 # scheme: Muse
 scheme: Gemini
 ```
 
-##### 修改摘录(excerpt)方式
+#### 修改摘录(excerpt)方式
 修改hexo-next配置文件 `<next_root>/_config.yml`
 ```yml
 excerpt_description: false # 使用 front-matter 的 description 字段作为简介显示在博客列表页（当字段为空时显示完整博客），关闭
@@ -75,7 +75,7 @@ auto_excerpt:
 scroll_to_more: true
 ```
 
-##### 修改“Edited on”展示策略
+#### 修改“Edited on”展示策略
 修改hexo-next配置文件 `<next_root>/_config.yml`
 ```yml
 post_meta:
@@ -85,7 +85,7 @@ post_meta:
     another_day: false
 ```
 
-##### 添加about和tags
+#### 添加about和tags
 创建about和tags页面
 ```bash
 $ cd <blog_root>
@@ -106,7 +106,7 @@ menu:
   about: /about/ || user
 ```
 
-##### 搜索服务
+#### 搜索服务
 > 使用`Local Search`的搜索服务
 
 安装hexo插件
@@ -131,7 +131,7 @@ local_search:
   trigger: auto
 ```
 
-##### 侧边栏头像
+#### 侧边栏头像
 头像文件保存至`<hexo_root/source/uploads/avatar.png>`
 修改hexo-next配置文件 `<next_root>/_config.yml`
 ```yml
@@ -143,7 +143,7 @@ avatar:
   rotated: true
 ```
 
-##### 侧边栏社交信息
+#### 侧边栏社交信息
 修改hexo-next配置文件 `<next_root>/_config.yml`，格式与前面相同：
 ```yml
 social:
@@ -273,7 +273,7 @@ vendors:
 ```
 > 参考： [the icons are gone?](https://github.com/theme-next/hexo-filter-optimize/issues/2)
 
-## 常用指令：
+## 常用指令
 ```bash
 $ hexo init [folder] # 新建一个网站。如果没有设置 folder ，Hexo 默认在目前的文件夹建立网站
 $ hexo new [layout] <title> # 新建一篇文章。如果没有设置 layout ，默认使用 _config.yml 中的 default_layout 参数代替
