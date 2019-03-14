@@ -6,7 +6,7 @@ tags:
 - theme next
 ---
 
-## 环境配置
+## 环境安装
 安装git
 安装nodejs
 配置npm镜像
@@ -215,7 +215,7 @@ gitalk:
 > [Hexo插件之百度主动提交链接](https://monsterlin.github.io/2017/01/04/Hexo插件之百度主动提交链接/)
 
 ### 谷歌
-访问 [Google Search Console](https://search.google.com/search-console) “添加资源”，支持两种方式： ![请选择资源类型(使用gitpage薅羊毛的各位请选择“网址前缀”]()
+访问 [Google Search Console](https://search.google.com/search-console) “添加资源”，支持两种方式： ![请选择资源类型(使用gitpage薅羊毛的各位请选择“网址前缀”)](https://ghamster.gitee.io/ihservice/Hexo_Blog折腾笔记/请选择资源类型.png)
 
 验证方法可选：
 - HTML标记：修改hexo-next配置文件 `<next_root>/_config.yml`
