@@ -273,6 +273,46 @@ vendors:
 ```
 > 参考： [the icons are gone?](https://github.com/theme-next/hexo-filter-optimize/issues/2)
 
+### 图片与图床
+> Hexo官方描述：[资源文件夹](https://hexo.io/zh-cn/docs/asset-folders)
+> 主流图床：[markdown博客图床上传的艰辛之路](https://wdd.js.org/the-hard-way-of-markdown-insert-images.html)
+
+Hexo给出的方案最大的问题在于实时显示和可传播性：
+- 标签就不说了，离了Hexo直接玩完
+- 使用markdown的标准格式`![]()`时，与通用的markdown链接解析逻辑不兼容。比如`_post`文件夹下有一篇名为`test.md`的博客，Hexo默认会生成`test`文件夹存放图片资源，博客中图片的引用链接必须直接写成`xxx.png`，而不是markdown标准的`/test/xxx.png`或`./test/xxx.png`
+
+最好的解决方式是搭建图床，但是自建图床太贵，严重违背了“一个子儿不花薅羊毛”的初衷，公共图床又怕哪天就没了...
+
+**所以，我盯上了gitee，没错！就是国内的码云！访问速度快，存储容量高！重点是可靠免费！**
+
+在gitee创建repo，创建一个`index.html`文件（内容不限，标准的html文档就可以），样例代码：
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>博客图床</title>
+    </head>
+    <body>
+        <div>
+            <a href="https://ghamster0.github.io/">博客地址</a>
+            <a href="https://gitee.com/Ghamster/IHService">仓库地址</a>
+    </body>
+</html>
+```
+选择*服务->Gitee Pages*，开启Gitee Pages服务
+上传图片文件，更新服务（唯一的美中不足，免费版需要手动更新）后便可通过url访问，路径格式为`<gitee page主页地址>/<文件在仓库中的路径>`。如用户`Ghamster`的仓库`HService`下，存放文件`Hexo_Blog折腾笔记/请选择资源类型.png`，则图片链接为：[https://ghamster.gitee.io/ihservice/Hexo_Blog折腾笔记/请选择资源类型.png](https://ghamster.gitee.io/ihservice/Hexo_Blog折腾笔记/请选择资源类型.png)
+![图床首页](https://ghamster.gitee.io/ihservice/Hexo_Blog折腾笔记/图床首页.png)
+![图床文件页](https://ghamster.gitee.io/ihservice/Hexo_Blog折腾笔记/图床文件页.png)
+
+**懒人通道**
+显然手动填写每张图片的url太过繁琐，所以在此通过编写脚本简化这一工作，代码地址：[https://github.com/Ghamster0/Blog-Tools](https://github.com/Ghamster0/Blog-Tools)
+使用方式：
+- 将图片放到博客repo中，可以将所有图片存放到一个默认位置，如`<hexo_root>/source/images`,也可以在`_post`下为每个`.md`文件创建单独的文件夹
+- 写作时，使用相对链接引用，如`./folder_for_title/xxx.png`或`../images/xxx.png`
+- 运行脚本，将图片拷贝到图床仓库，并自动修改链接
+
 ## 常用指令
 ```bash
 $ hexo init [folder] # 新建一个网站。如果没有设置 folder ，Hexo 默认在目前的文件夹建立网站
