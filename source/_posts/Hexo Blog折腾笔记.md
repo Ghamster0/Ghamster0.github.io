@@ -3,7 +3,6 @@ title: Hexo Blog折腾笔记
 date: 2019-03-12 00:01
 tags: 
 - hexo
-- theme next
 ---
 
 ## 环境安装
