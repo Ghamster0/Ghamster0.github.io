@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="uL1SKjfKIZMEUOU77rLDMH7JfjC_Gz1JOACZ8-E6yAA">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="背景之前刚完成的一个项目，使用了Flask+Jinja2+JQuery的技术栈，写的很不开心：模板渲染+ajax混用导致代码有些凌乱；缺失ioc&amp;amp;aop；Flask没有异步非阻塞……于是下一个项目选型的时候，我打算用SpringBoot+Vue，但方案被领导驳回，要求使用nodejs，于是就有了这篇新手向博客 简介 参考博客： 全栈开发实战：用Vue2+Koa1开发完整的前后端项目（更新K">
+<meta name="keywords" content="Node,Vue,Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue Koa开发实战">
+<meta property="og:url" content="https://ghamster0.github.io/2019/09/10/Vue Koa开发实战/index.html">
+<meta property="og:site_name" content="Ghamster Blog">
+<meta property="og:description" content="背景之前刚完成的一个项目，使用了Flask+Jinja2+JQuery的技术栈，写的很不开心：模板渲染+ajax混用导致代码有些凌乱；缺失ioc&amp;amp;aop；Flask没有异步非阻塞……于是下一个项目选型的时候，我打算用SpringBoot+Vue，但方案被领导驳回，要求使用nodejs，于是就有了这篇新手向博客 简介 参考博客： 全栈开发实战：用Vue2+Koa1开发完整的前后端项目（更新K">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://ghamster.gitee.io/ihservice/Vue_Koa开发实战/前端页面.png">
+<meta property="og:image" content="https://ghamster.gitee.io/ihservice/Vue_Koa开发实战/中间件测试.png">
+<meta property="og:image" content="https://ghamster.gitee.io/ihservice/Vue_Koa开发实战/接口测试1.png">
+<meta property="og:image" content="https://ghamster.gitee.io/ihservice/Vue_Koa开发实战/接口测试2.png">
+<meta property="og:image" content="https://ghamster.gitee.io/ihservice/Vue_Koa开发实战/前端调用接口测试.png">
+<meta property="og:image" content="https://ghamster.gitee.io/ihservice/Vue_Koa开发实战/页面未渲染.png">
+<meta property="og:image" content="https://ghamster.gitee.io/ihservice/Vue_Koa开发实战/创建secret.gif">
+<meta property="og:updated_time" content="2019-09-10T09:17:08.875Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue Koa开发实战">
+<meta name="twitter:description" content="背景之前刚完成的一个项目，使用了Flask+Jinja2+JQuery的技术栈，写的很不开心：模板渲染+ajax混用导致代码有些凌乱；缺失ioc&amp;amp;aop；Flask没有异步非阻塞……于是下一个项目选型的时候，我打算用SpringBoot+Vue，但方案被领导驳回，要求使用nodejs，于是就有了这篇新手向博客 简介 参考博客： 全栈开发实战：用Vue2+Koa1开发完整的前后端项目（更新K">
+<meta name="twitter:image" content="https://ghamster.gitee.io/ihservice/Vue_Koa开发实战/前端页面.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://ghamster0.github.io/2019/09/10/Vue Koa开发实战/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Vue Koa开发实战 | Ghamster Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ghamster Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">relax for a while...and go on 搬砖</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ghamster0.github.io/2019/09/10/Vue Koa开发实战/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Crazy Rookie">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ghamster Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vue Koa开发实战
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-09-10 16:10:01" itemprop="dateCreated datePublished" datetime="2019-09-10T16:10:01+08:00">2019-09-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-09-10 17:17:08" itemprop="dateModified" datetime="2019-09-10T17:17:08+08:00">2019-09-10</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>之前刚完成的一个项目，使用了<code>Flask+Jinja2+JQuery</code>的技术栈，写的很不开心：模板渲染+<code>ajax</code>混用导致代码有些凌乱；缺失<code>ioc&amp;aop</code>；<code>Flask</code>没有异步非阻塞……<br>于是下一个项目选型的时候，我打算用<code>SpringBoot+Vue</code>，但方案被领导驳回，要求使用<code>nodejs</code>，于是就有了这篇新手向博客</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><blockquote>
+<p>参考博客： <a href="https://molunerfinn.com/Vue+Koa/" target="_blank" rel="noopener">全栈开发实战：用Vue2+Koa1开发完整的前后端项目（更新Koa2）</a></p>
+</blockquote>
+<blockquote>
+<p>前置技能： 具备<code>Vue</code>和<code>Koa</code>基础知识，了解<code>Javascript</code>基础语法（和混乱），了解<code>Nodejs(npm)</code>常用操作</p>
+</blockquote>
+<p>本文以新手视角，从零开始逐步构建一个<code>Vue</code>+<code>Koa2</code>的web应用，项目主要包括以下内容：</p>
+<ul>
+<li>基于<code>Vue</code>组件构建单页面应用，包含登录、用户、管理员视图，由<code>Vue Router</code>控制页面跳转</li>
+<li>使用<code>Koa</code>及相关插件提供<code>API</code>接口</li>
+<li><code>Sequelize</code>数据库访问</li>
+<li>基于<code>json web token</code>的登录验证</li>
+<li>配置本地运行、打包docker镜像部署</li>
+</ul>
+<p>为了简化构建(因为菜)，前端部分使用了<code>Vue Cli</code>，<code>Cli</code>的本质依旧是使用<code>Webpack</code>打包，但提供了一系列针对<code>Vue</code>的配置，使构建过程开箱即用；另外<code>Login.vue</code>使用了“参考博客”的源码。项目在一些阶段会打tag，并附上源码地址</p>
+<p>由于以前从未接触过<code>nodejs</code>后台开发，本文可能存在一些局限和错误，欢迎指正</p>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>安装<code>Nodejs</code>，建议更换淘宝源，<a href="https://npm.taobao.org/" target="_blank" rel="noopener">镜像地址</a>，指令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure></p>
+<p>安装<code>Vue</code>和<code>Vue Cli</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install vue</span><br><span class="line">npm install -g @vue/cli</span><br><span class="line"><span class="comment"># 若使用vue serve和vue build命令需要安装全局扩展</span></span><br><span class="line">npm install -g @vue/cli-service-global</span><br></pre></td></tr></table></figure></p>
+<p>创建项目<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue create vue-koa</span><br></pre></td></tr></table></figure></p>
+<p>新建<code>server</code>目录，作为<code>koa</code>代码目录，在目录下创建<code>app.js</code>作为入口文件，整体目录结构如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">├── babel.config.js</span><br><span class="line">├── node_modules</span><br><span class="line">│   └── ...</span><br><span class="line">├── package-lock.json</span><br><span class="line">├── package.json</span><br><span class="line">├── public</span><br><span class="line">│   ├── favicon.ico</span><br><span class="line">│   └── index.html</span><br><span class="line">├── server <span class="comment"># 后端源码目录</span></span><br><span class="line">│   └── app.js <span class="comment"># 后端入口</span></span><br><span class="line">└── src <span class="comment"># 前端源码目录</span></span><br><span class="line">    ├── App.vue <span class="comment"># vue根组件，main.js中将该组件挂载到index.html中</span></span><br><span class="line">    ├── assets</span><br><span class="line">    │   └── logo.png</span><br><span class="line">    ├── components</span><br><span class="line">    │   └── HelloWorld.vue</span><br><span class="line">    └── main.js <span class="comment"># 前端入口</span></span><br></pre></td></tr></table></figure></p>
+<p>本节源码：<a href="https://github.com/Ghamster0/vue-koa/tree/v0.0" target="_blank" rel="noopener">GitHub Tag V0.0</a></p>
+<h2 id="接口定义"><a href="#接口定义" class="headerlink" title="接口定义"></a>接口定义</h2><p>项目使用<code>jwt token</code>做登录验证，用户登录点击登录时，前端调用<em>获取token</em>接口，使用用户名和密码认证，接口返回经<code>jwt</code>加密的<code>token</code>；随后，前端发送所有请求均携带该<code>token</code>作为已登录凭证</p>
+<p>按照标准，<code>token</code>类型为<code>Bearer</code>，对需要权限认证的接口，<code>request header</code>设置字段<code>{Authorization: &#39;Bearer &lt;token&gt;&#39;}</code>；对于认证失败的请求，服务器应当返回401，<code>response header</code>设置字段<code>{&#39;WWW-Authenticate&#39;: &#39;Bearer&#39;}</code></p>
+<p>后端服务运行在3000端口，提供两个接口：</p>
+<h3 id="获取token"><a href="#获取token" class="headerlink" title="获取token"></a>获取token</h3><p>请求参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Method: POST</span><br><span class="line">Api: /api/auth</span><br><span class="line">Body: &#123;username: un, password: pw&#125;</span><br></pre></td></tr></table></figure></p>
+<p>返回值<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"code"</span>: <span class="number">2000</span>,</span><br><span class="line">  <span class="attr">"token"</span>: <span class="string">"eyqk"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="获取当前用户信息"><a href="#获取当前用户信息" class="headerlink" title="获取当前用户信息"></a>获取当前用户信息</h3><p>接口需要携带<code>token</code>，请求参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Method: GET</span><br><span class="line">Api: /api/user</span><br></pre></td></tr></table></figure></p>
+<p>返回值<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"username"</span>: <span class="string">"艾广威"</span>,</span><br><span class="line">  <span class="attr">"roles"</span>: [</span><br><span class="line">    <span class="string">"user"</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">"iat"</span>: <span class="number">1567656871</span>,</span><br><span class="line">  <span class="attr">"exp"</span>: <span class="number">1567660471</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="前端页面构建"><a href="#前端页面构建" class="headerlink" title="前端页面构建"></a>前端页面构建</h2><p>这一节，将创建一个具有两级导航结构的页面，页面顶部导航栏为一级导航，侧边导航菜单为二级导航。点击顶部导航的菜单项，切换侧边导航菜单；点击侧边导航菜单，切换页面主体内容</p>
+<p>项目使用<code>Vue Cli</code>构建，在根目录下创建<code>vue.config.js</code>,该文件会自动被<code>Vue Cli</code>识别。由于没有对<code>babel</code>做额外调整，可将<code>babel.config.js</code>文件删除</p>
+<h3 id="引入UI等组件"><a href="#引入UI等组件" class="headerlink" title="引入UI等组件"></a>引入UI等组件</h3><p>引入<code>element ui</code>组件库，简化页面排版</p>
+<blockquote>
+<p>安装方式： <code>npm i element-ui -S</code><br>这里使用全局使用方式，实际项目中建议按需引入，<a href="https://element.eleme.cn/#/zh-CN/component/quickstart#an-xu-yin-ru" target="_blank" rel="noopener">参考文档</a></p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /src/main.js */</span></span><br><span class="line"><span class="keyword">import</span> ElementUI <span class="keyword">from</span> <span class="string">'element-ui'</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'element-ui/lib/theme-chalk/index.css'</span></span><br><span class="line"></span><br><span class="line">Vue.use(ElementUI);</span><br></pre></td></tr></table></figure>
+<p>引入<code>Vuejs Logger</code>, 方便打印log</p>
+<blockquote>
+<p>安装方式：<code>npm install vuejs-logger --save-exact</code></p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /src/main.js */</span></span><br><span class="line"><span class="keyword">import</span> vueLogger <span class="keyword">from</span> <span class="string">'vuejs-logger'</span></span><br><span class="line"></span><br><span class="line">Vue.use(vueLogger)</span><br></pre></td></tr></table></figure>
+<h3 id="引入Vue-Router-建立二级路由"><a href="#引入Vue-Router-建立二级路由" class="headerlink" title="引入Vue Router 建立二级路由"></a>引入Vue Router 建立二级路由</h3><blockquote>
+<p>安装Vue Router，指令：<code>npm install vue-router</code></p>
+</blockquote>
+<p>在<code>/src</code>下建立如下目录结构：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── App.vue <span class="comment"># Vue根组件，包含顶部导航栏和一级 router-view 标签</span></span><br><span class="line">├── assets</span><br><span class="line">│   └── logo.png</span><br><span class="line">├── components</span><br><span class="line">│   ├── pages</span><br><span class="line">│   │   ├── Admin.vue <span class="comment"># 管理员视图，包含管理员侧边导航菜单元数据</span></span><br><span class="line">│   │   ├── Login.vue</span><br><span class="line">│   │   ├── Logout.vue</span><br><span class="line">│   │   ├── User.vue <span class="comment"># 用户视图</span></span><br><span class="line">│   │   ├── admin</span><br><span class="line">│   │   │   └── AC.vue</span><br><span class="line">│   │   └── user</span><br><span class="line">│   │       └── UC.vue</span><br><span class="line">│   └── parts <span class="comment"># 公用页面组件</span></span><br><span class="line">│       ├── PageFooter.vue</span><br><span class="line">│       └── SideMenuContent.vue <span class="comment"># 侧边导航+主内容（二级 router-view 标签）</span></span><br><span class="line">├── main.js</span><br><span class="line">├── router.js <span class="comment"># 前端路由配置</span></span><br><span class="line">└── utils.js</span><br></pre></td></tr></table></figure></p>
+<p>页面结构分析：</p>
+<ul>
+<li><code>/App.vue</code>：页面的根组件，定义顶部导航栏（一级导航）、底部页脚。中部是<code>router-view</code>标签，提供一级路由切换，如：点击导航栏的“管理员”，导航到<code>/admin</code>，<code>router-view</code>标签渲染为<code>/components/pages/Admin.vue</code></li>
+<li><code>/components/pages/Admin.vue</code>（<code>User.vue</code>类似）：该组件<code>data</code>的<code>menus</code>属性是一个列表对象，定义了侧边导航菜单的内容；使用<code>SideMenuContent.vue</code>模板渲染<code>menus</code>，支持二级菜单</li>
+<li><code>/components/pages/parts/SideMenuContent.vue</code>：左侧为侧边导航（二级导航），右侧包含一个二级<code>router-view</code>标签，用作二级路由渲染</li>
+<li><code>/components/pages/AC.vue</code> （<code>UC.vue</code>类似）：页面主内容，由<code>SideMenuContent</code>内的<code>router-view</code>渲染</li>
+<li>更多细节查看本节结束给出的源码</li>
+</ul>
+<p>接下来配置<code>Vue Router</code>：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /src/router.js */</span></span><br><span class="line"><span class="keyword">import</span> VueRouter <span class="keyword">from</span> <span class="string">'vue-router'</span></span><br><span class="line"><span class="keyword">import</span> Logout <span class="keyword">from</span> <span class="string">'./components/pages/Logout.vue'</span></span><br><span class="line"><span class="keyword">import</span> Login <span class="keyword">from</span> <span class="string">'./components/pages/Login.vue'</span></span><br><span class="line"><span class="keyword">import</span> User <span class="keyword">from</span> <span class="string">'./components/pages/User.vue'</span></span><br><span class="line"><span class="keyword">import</span> UC <span class="keyword">from</span> <span class="string">'./components/pages/user/UC.vue'</span></span><br><span class="line"><span class="keyword">import</span> Admin <span class="keyword">from</span> <span class="string">'./components/pages/Admin.vue'</span></span><br><span class="line"><span class="keyword">import</span> AC <span class="keyword">from</span> <span class="string">'./components/pages/admin/AC.vue'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> routes = [</span><br><span class="line">    &#123;</span><br><span class="line">        path: <span class="string">'/user'</span>, <span class="attr">component</span>: User,</span><br><span class="line">        children: [</span><br><span class="line">            &#123;</span><br><span class="line">                path: <span class="string">'info'</span>, <span class="attr">component</span>: UC</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;,&#123;</span><br><span class="line">        path: <span class="string">'/admin'</span>, <span class="attr">component</span>: Admin,</span><br><span class="line">        children: [</span><br><span class="line">            &#123;</span><br><span class="line">                path: <span class="string">'info'</span>, <span class="attr">component</span>: AC</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;,&#123;</span><br><span class="line">        path: <span class="string">'/login'</span>, <span class="attr">component</span>: Login</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        path: <span class="string">'/logout'</span>, <span class="attr">component</span>: Logout</span><br><span class="line">    &#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> VueRouter(&#123;</span><br><span class="line">    mode: <span class="string">'history'</span>, <span class="comment">//使用history模式，避免url的host和uri之间显示很丑的"#"</span></span><br><span class="line">    routes: routes</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> router</span><br></pre></td></tr></table></figure></p>
+<p>在<code>main.js</code>中引入<code>router</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> VueRouter <span class="keyword">from</span> <span class="string">'vue-router'</span></span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">'./router.js'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  router: router,</span><br><span class="line">  render: <span class="function"><span class="params">h</span> =&gt;</span> h(App),</span><br><span class="line">&#125;).$mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>由于我在<code>/src/components/parts/SideMenuContent.vue</code>动态创建了新的组件，需要启用运行时编译</p>
+</blockquote>
+<p>配置启用运行时编译：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /vue.config.js */</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    runtimeCompiler: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时运行<code>npm run serve</code>，访问8080端口，可以看到如下界面</p>
+<p><img src="https://ghamster.gitee.io/ihservice/Vue_Koa开发实战/前端页面.png" alt="基本页面]"></p>
+<p>本节源码：<a href="https://github.com/Ghamster0/vue-koa/tree/v0.1" target="_blank" rel="noopener">GitHub Tag V0.1</a></p>
+<h2 id="后端服务搭建"><a href="#后端服务搭建" class="headerlink" title="后端服务搭建"></a>后端服务搭建</h2><blockquote>
+<p>安装<code>koa</code>，指令：<code>npm install koa</code></p>
+</blockquote>
+<p>后端服务需要实现以下功能：</p>
+<ul>
+<li>数据库访问</li>
+<li>一个路由组件，提供<em>接口定义</em>章节定义的两个接口，以及接口的访问权限控制</li>
+<li>一组中间件，负责请求的预处理和后处理</li>
+</ul>
+<p>后端目录结构如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── app.js</span><br><span class="line">├── config.js</span><br><span class="line">├── const.js</span><br><span class="line">├── controller</span><br><span class="line">│   ├── auth-controller.js</span><br><span class="line">│   └── user-controller.js</span><br><span class="line">├── middlewares</span><br><span class="line">│   ├── auth</span><br><span class="line">│   │   ├── auth-maker.js</span><br><span class="line">│   │   └── jwt-resolver.js</span><br><span class="line">│   └── error-handler.js</span><br><span class="line">├── router.js <span class="comment"># 路由，从controller导入</span></span><br><span class="line">├── schema <span class="comment"># 数据库初始化，及各表定义</span></span><br><span class="line">│   ├── db.js</span><br><span class="line">│   ├── role.js</span><br><span class="line">│   └── user.js</span><br><span class="line">├── secrets <span class="comment"># 敏感信息，应加入.gitignore</span></span><br><span class="line">│   ├── db.json <span class="comment"># 数据库配置</span></span><br><span class="line">│   └── jwt-key.txt <span class="comment"># jwt密钥，纯文本字符串</span></span><br><span class="line">├── service</span><br><span class="line">│   └── user-service.js</span><br><span class="line">└── utils.js</span><br></pre></td></tr></table></figure></p>
+<h3 id="配置运行环境"><a href="#配置运行环境" class="headerlink" title="配置运行环境"></a>配置运行环境</h3><blockquote>
+<p>应确保删除了<code>/babel.config.js</code>，否则会默认被<code>babel</code>加载导致启动失败</p>
+</blockquote>
+<p>由于<code>node</code>不支持<code>es6</code>的<code>import</code>语法，这里需要使用<code>babel</code>做简单的语法转换。开发环境下使用<code>@babel/register</code>运行时转换即可（生产环境会在之后的章节解释），首先安装<code>@babel/register</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev @babel/core @babel/cli @babel/preset-env</span><br><span class="line">npm install --save-dev babel-preset-env</span><br><span class="line">npm install @babel/register --save-dev</span><br></pre></td></tr></table></figure>
+<p>在根目录下添加<code>server.dev.js</code>文件，代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /server.dev.js */</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">'@babel/register'</span>)(&#123;</span><br><span class="line">  <span class="string">'presets'</span>: [</span><br><span class="line">    [<span class="string">'env'</span>, &#123;</span><br><span class="line">      <span class="string">'targets'</span>: &#123;</span><br><span class="line">        <span class="string">'node'</span>: <span class="literal">true</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;]</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">require</span>(<span class="string">'./server/app.js'</span>)</span><br></pre></td></tr></table></figure>
+<p>在<code>package.json</code>中添加启动脚本</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"serve-koa"</span>: <span class="string">"node server.dev.js"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>稍后就可以使用<code>npm run serve-koa</code>启动后端服务</p>
+<h3 id="定义通用中间件"><a href="#定义通用中间件" class="headerlink" title="定义通用中间件"></a>定义通用中间件</h3><p>安装<code>koa-json</code>和<code>koa-bodyparser</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install koa-json</span><br><span class="line">npm install koa-bodyparser</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>koa-json</code>：用于自动序列化<code>ctx.body</code>中的<code>Object</code>对象</li>
+<li><code>koa-bodyparser</code>：用于将<code>ctx</code>中的<code>formData</code>解析到<code>ctx.request.body</code>中</li>
+</ul>
+<p>在<code>main.js</code>中引入两个中间件，另外简单定义一个打印<code>hello world</code>的中间件，代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Koa <span class="keyword">from</span> <span class="string">'koa'</span></span><br><span class="line"><span class="keyword">import</span> koaBodyParser <span class="keyword">from</span> <span class="string">'koa-bodyparser'</span></span><br><span class="line"><span class="keyword">import</span> json <span class="keyword">from</span> <span class="string">'koa-json'</span></span><br><span class="line"><span class="keyword">import</span> path <span class="keyword">from</span> <span class="string">'path'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa();</span><br><span class="line"></span><br><span class="line">app.use(koaBodyParser());</span><br><span class="line">app.use(json());</span><br><span class="line">app.use(<span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">    ctx.body = &#123; <span class="attr">msg</span>: <span class="string">"Hello World"</span>, <span class="attr">path</span>: ctx.path, <span class="attr">method</span>: ctx.method &#125;;</span><br><span class="line">    <span class="keyword">await</span> next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3000</span>);</span><br></pre></td></tr></table></figure>
+<p>使用<code>npm run serve-koa</code>启动服务，使用<code>Postman</code>测试一下：</p>
+<p><img src="https://ghamster.gitee.io/ihservice/Vue_Koa开发实战/中间件测试.png" alt="中间件测试"></p>
+<h3 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h3><blockquote>
+<p>如果使用8.0以上版本的mysql，sequelize可能会报错，stackoverflow相关<a href="https://stackoverflow.com/questions/50093144/mysql-8-0-client-does-not-support-authentication-protocol-requested-by-server" target="_blank" rel="noopener">链接</a><br>解决方式：<code>ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED WITH mysql_native_password BY &#39;password&#39;</code></p>
+</blockquote>
+<p>项目使用<code>mysql</code>数据库存储用户数据，在数据库中创建两张表，<code>user</code>和<code>role</code>；使用<code>sequelize</code>框架进行数据库操作，首先安装<code>sequelize</code>和数据库驱动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install --save sequelize</span><br><span class="line">npm install --save mysql2</span><br></pre></td></tr></table></figure>
+<p>数据库配置信息以<code>json</code>文件格式存放在<code>/server/secrets/db.json</code>中，格式如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"host"</span>: <span class="string">"10.143.53.100"</span>,</span><br><span class="line">    <span class="attr">"port"</span>: <span class="number">3306</span>,</span><br><span class="line">    <span class="attr">"schema"</span>: <span class="string">"vueDemo"</span>,</span><br><span class="line">    <span class="attr">"username"</span>: <span class="string">"root"</span>,</span><br><span class="line">    <span class="attr">"password"</span>: <span class="string">"root"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>/server/secrets/config.js</code>中加载配置文件（同时也加载了<code>jwt</code>的密钥，这样做是为了方便后期部署时，将<code>secrets</code>目录下的文件存储到<code>docker</code>中）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /server/config.js */</span></span><br><span class="line"><span class="keyword">import</span> fs <span class="keyword">from</span> <span class="string">"fs"</span>;</span><br><span class="line"><span class="keyword">import</span> path <span class="keyword">from</span> <span class="string">'path'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> secretPath = <span class="string">'secrets'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    SECRET: fs.readFileSync(path.resolve(__dirname, secretPath, <span class="string">'jwt-key.txt'</span>)),</span><br><span class="line">    EXP_TIME: <span class="string">'1h'</span>,</span><br><span class="line">    DATA_BASE: <span class="built_in">JSON</span>.parse(fs.readFileSync(path.resolve(__dirname, secretPath, <span class="string">'db.json'</span>)))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来配置<code>sequelize</code>并导出数据库上下文对象</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /server/schema/db.js */</span></span><br><span class="line"><span class="keyword">import</span> Sequelize <span class="keyword">from</span> <span class="string">'sequelize'</span></span><br><span class="line"><span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">'../config.js'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> dbConfig = config.DATA_BASE;</span><br><span class="line"><span class="keyword">const</span> sequelize = <span class="keyword">new</span> Sequelize(<span class="string">`mysql://<span class="subst">$&#123;dbConfig.username&#125;</span>:<span class="subst">$&#123;dbConfig.password&#125;</span>@<span class="subst">$&#123;dbConfig.host&#125;</span>:<span class="subst">$&#123;dbConfig.port&#125;</span>/<span class="subst">$&#123;dbConfig.schema&#125;</span>`</span>,</span><br><span class="line">    &#123;</span><br><span class="line">        pool: &#123; <span class="comment">//数据库连接池</span></span><br><span class="line">            max: <span class="number">5</span>,</span><br><span class="line">            min: <span class="number">1</span>,</span><br><span class="line">            acquire: <span class="number">30000</span>,</span><br><span class="line">            idle: <span class="number">10000</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> sequelize</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>安装<code>uuid</code>用作自增主键，指令：<code>npm install uuid</code></p>
+</blockquote>
+<p>然后创建<code>user</code>表对应的对象（<code>role</code>表类似）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /server/schema/user.js */</span></span><br><span class="line"><span class="keyword">import</span> Sequelize <span class="keyword">from</span> <span class="string">'sequelize'</span></span><br><span class="line"><span class="keyword">import</span> sequelize <span class="keyword">from</span> <span class="string">'./db.js'</span></span><br><span class="line"><span class="keyword">import</span> uuid <span class="keyword">from</span> <span class="string">'uuid'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Model = Sequelize.Model;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">extends</span> <span class="title">Model</span> </span>&#123; &#125;</span><br><span class="line"></span><br><span class="line">User.init(&#123;</span><br><span class="line">    id: &#123;</span><br><span class="line">        type: Sequelize.UUID,</span><br><span class="line">        defaultValue: uuid(), <span class="comment">// id为空时，使用uuid自动生成主键</span></span><br><span class="line">        primaryKey: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    name: &#123;</span><br><span class="line">        type: Sequelize.STRING,</span><br><span class="line">        allowNull: <span class="literal">false</span></span><br><span class="line">    &#125;,</span><br><span class="line">    passwd: &#123;</span><br><span class="line">        type: Sequelize.STRING,</span><br><span class="line">        allowNull: <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;, &#123;</span><br><span class="line">        sequelize,</span><br><span class="line">        modelName: <span class="string">'user'</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">User.sync().then(<span class="function"><span class="params">()</span> =&gt;</span> &#123; <span class="built_in">console</span>.log(<span class="string">'== Table: User init!'</span>) &#125;); <span class="comment">//初始化数据库，如果表不存在则自动创建</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> User</span><br></pre></td></tr></table></figure>
+<p>接下来就可以方便地使用<code>user</code>和<code>Role</code>进行数据库访问</p>
+<h3 id="实现接口"><a href="#实现接口" class="headerlink" title="实现接口"></a>实现接口</h3><p>按照<em>接口定义</em>章节的描述，需要实现两个接口，其中<code>/api/user</code>需要鉴权，<code>/api/auth</code>可在未登录状态访问</p>
+<p>整体思路及代码结构如下：</p>
+<ul>
+<li><p><code>/server/middlewares/auth</code>目录存放权限验证相关代码，<code>jwt-resolver.js</code>解析请求的<code>Header</code>，解密<code>authorization</code>属性得到<code>User</code>对象（包括id、name和roles属性），将对象绑定到<code>Header</code>的<code>currentUser</code>属性。<code>auth-maker.js</code>导出一个<code>check</code>方法，接受<code>ctx</code>对象和一个<code>requireRole</code>属性，当<code>ctx.request.currentUser</code>不具备<code>requireRole</code>时抛出异常；可以将该方法放在需要权限验证的<code>controller</code>代码开始处</p>
+</li>
+<li><p><code>/server/controller</code>下的两个<code>controller</code>对应两个接口</p>
+</li>
+<li><p><code>/server/middlewares/error-handler.js</code>拦截所有异常，并为<code>statusCode</code>为401的请求设置<code>response header</code>-&gt;<code>{ &#39;WWW-Authenticate&#39;: &#39;Bearer&#39; }</code></p>
+</li>
+</ul>
+<h4 id="User-service"><a href="#User-service" class="headerlink" title="User service"></a>User service</h4><p>在<code>user-service.js</code>中添加以下方法，后面会用到：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /server/service/user-service.js */</span></span><br><span class="line"><span class="keyword">import</span> User <span class="keyword">from</span> <span class="string">'../schema/user'</span></span><br><span class="line"><span class="keyword">import</span> Role <span class="keyword">from</span> <span class="string">'../schema/role'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; ROLE_USER &#125; <span class="keyword">from</span> <span class="string">'../const'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    getUser: <span class="keyword">async</span> (id) =&gt; &#123;&#125;, <span class="comment">//返回id对应的User对象，如果不存在返回null</span></span><br><span class="line">    checkUser: <span class="keyword">async</span> (name, passwd) =&gt; &#123;&#125;, <span class="comment">//返回name和passwd符合的User对象，不存在则返回null</span></span><br><span class="line">    getRoles: <span class="keyword">async</span> uid =&gt; &#123; <span class="comment">//返回该uid对应user具有的roles，不存在则返回ROLE_USER并更新数据库</span></span><br><span class="line">        <span class="keyword">let</span> rolesModel = <span class="keyword">await</span> Role.findAll(&#123; <span class="attr">where</span>: &#123; <span class="attr">uid</span>: uid &#125; &#125;);</span><br><span class="line">        <span class="keyword">if</span> (rolesModel.length &lt;= <span class="number">0</span>) ... <span class="comment">//省略更新逻辑</span></span><br><span class="line">        <span class="keyword">const</span> roles = [];</span><br><span class="line">        rolesModel.forEach(<span class="function"><span class="params">r</span> =&gt;</span> roles.push(r.role))</span><br><span class="line">        <span class="keyword">return</span> roles</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="权限中间件"><a href="#权限中间件" class="headerlink" title="权限中间件"></a>权限中间件</h4><blockquote>
+<p>安装<code>jsonwebtoken</code>，指令：<code>npm install jsonwebtoken</code></p>
+</blockquote>
+<p><code>jwt-resolver.js</code>解密<code>Header</code>的<code>authorization</code>字段，得到<code>user</code>对象，代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /server/middlewares/auth/jwt-resolver.js */</span></span><br><span class="line"><span class="keyword">import</span> jwt <span class="keyword">from</span> <span class="string">'jsonwebtoken'</span></span><br><span class="line"><span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">'../../config.js'</span></span><br><span class="line"><span class="keyword">import</span> userService <span class="keyword">from</span> <span class="string">'../../service/user-service.js'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> token;</span><br><span class="line">    <span class="keyword">let</span> authHeader = ctx.header.authorization; <span class="comment">//从header中取出token</span></span><br><span class="line">    <span class="keyword">if</span> (authHeader) &#123;</span><br><span class="line">        <span class="keyword">let</span> [authType, jwtToken] = authHeader.split(<span class="string">' '</span>); </span><br><span class="line">        <span class="keyword">if</span> (authType.toLowerCase() === <span class="string">'bearer'</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                token = jwt.verify(jwtToken, config.SECRET); <span class="comment">//使用jwt解密token</span></span><br><span class="line">                ctx.header.currentUser = token; <span class="comment">//将解析得到的user对象绑定到currentUser</span></span><br><span class="line">            &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">'Unresolved jwt token'</span>, e)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">await</span> next();</span><br><span class="line">    <span class="comment">// 省略自动更新token相关代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>auth-maker.js</code>导出<code>check</code>方法，代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /server/middlewares/auth/auth-maker.js */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    check: <span class="function">(<span class="params">ctx, requiredRole</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> user = ctx.header.currentUser;</span><br><span class="line">        <span class="keyword">if</span>(!user)&#123;</span><br><span class="line">            ctx.throw(<span class="number">401</span>, <span class="string">"4010::Unauthorized"</span>); <span class="comment">// 未登录（提供token）</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(!user.roles.includes(requiredRole))&#123;</span><br><span class="line">            ctx.throw(<span class="number">401</span>, <span class="string">"4011::PmissionDenied"</span>); <span class="comment">// 权限不足，如：roles=['user'], requiredRole='admin'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="配置路由"><a href="#配置路由" class="headerlink" title="配置路由"></a>配置路由</h4><p><code>auth-controller.js</code>实现了<code>/api/auth</code>接口，访问数据库检验<code>name</code>和<code>passwd</code>是否合法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /server/controller/auth-controller.js */</span></span><br><span class="line"><span class="keyword">import</span> jwt <span class="keyword">from</span> <span class="string">'jsonwebtoken'</span></span><br><span class="line"><span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">'../config.js'</span></span><br><span class="line"><span class="keyword">import</span> userService <span class="keyword">from</span> <span class="string">'../service/user-service.js'</span></span><br><span class="line"><span class="keyword">import</span> userService <span class="keyword">from</span> <span class="string">'../service/user-service.js'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    getAuth: <span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> auth = ctx.request.body;</span><br><span class="line">        <span class="keyword">const</span> user = <span class="keyword">await</span> userService.checkUser(auth.name, auth.passwd);</span><br><span class="line">        <span class="keyword">if</span>(!user)&#123; <span class="comment">// name和passwd错误时，抛出异常</span></span><br><span class="line">            ctx.throw(<span class="number">401</span>, <span class="string">"4010::Username or password error!"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">const</span> roles = <span class="keyword">await</span> userService.getRoles(user.id) <span class="comment">// 获取用户具有的role</span></span><br><span class="line">        <span class="keyword">const</span> token = &#123;</span><br><span class="line">            id: user.id,</span><br><span class="line">            name: user.name,</span><br><span class="line">            passwd: user.passwd,</span><br><span class="line">            roles: roles</span><br><span class="line">        &#125;</span><br><span class="line">        ctx.body = &#123; <span class="attr">code</span>: <span class="number">2000</span>, <span class="attr">token</span>: jwt.sign(token, config.SECRET, &#123; <span class="attr">expiresIn</span>: config.EXP_TIME &#125;) &#125;; <span class="comment">// 签名token，返回</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>user-controller.js</code>与上面类似，只是在入口处进行权限验证：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /server/controller/user-controller.js */</span></span><br><span class="line"><span class="keyword">import</span> authMaker <span class="keyword">from</span> <span class="string">'../middlewares/auth/auth-maker.js'</span></span><br><span class="line"><span class="keyword">import</span> &#123; ROLE_USER &#125; <span class="keyword">from</span> <span class="string">'../const.js'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    getUser: <span class="keyword">async</span> ctx =&gt; &#123;</span><br><span class="line">        authMaker.check(ctx, ROLE_USER) <span class="comment">//检验用户是否具有ROLE_USER权限，不满足时抛异常</span></span><br><span class="line">        ctx.body = ctx.header.currentUser</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>安装<code>koa-router</code>， 指令：<code>npm install koa-router</code></p>
+</blockquote>
+<p>接下来在<code>router.js</code>中引入以上两个<code>controller</code>，并指定对应的接口：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /server/router.js */</span></span><br><span class="line"><span class="keyword">import</span> koaRouter <span class="keyword">from</span> <span class="string">'koa-router'</span></span><br><span class="line"><span class="keyword">import</span> auth <span class="keyword">from</span> <span class="string">'./controller/auth-controller.js'</span></span><br><span class="line"><span class="keyword">import</span> user <span class="keyword">from</span> <span class="string">'./controller/user-controller.js'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> router = koaRouter();</span><br><span class="line">router.prefix(<span class="string">'/api'</span>); <span class="comment">//对所有路由添加'/api'前缀</span></span><br><span class="line"></span><br><span class="line">router.post(<span class="string">'/auth'</span>, auth.getAuth); <span class="comment">// 指定访问'/api/auth'的请求由auth.getAuth方法处理</span></span><br><span class="line">router.get(<span class="string">'/user'</span>, user.getUser);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> router</span><br></pre></td></tr></table></figure>
+<h4 id="异常捕获"><a href="#异常捕获" class="headerlink" title="异常捕获"></a>异常捕获</h4><p>在<code>error-handler.js</code>中捕获由中间件或<code>controller</code>抛出的异常并处理</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /server/middlewares/error-handler.js */</span></span><br><span class="line"><span class="keyword">import</span> utils <span class="keyword">from</span> <span class="string">'../utils.js'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">await</span> next();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        ctx.status = e.statusCode || e.status || <span class="number">500</span>; <span class="comment">//捕获异常并设置statusCode，默认500</span></span><br><span class="line">        <span class="comment">// '4010::Unauthorized' -&gt; 业务错误代码:4010;错误信息:Unauthorized</span></span><br><span class="line">        <span class="keyword">let</span> [code, msg] = e.message.split(<span class="string">'::'</span>); </span><br><span class="line">        ctx.body = utils.errMsg(<span class="built_in">Number</span>(code), msg);</span><br><span class="line">        <span class="keyword">switch</span> (ctx.status) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">401</span>: <span class="comment">// 对401权限错误设置指示“系统接受认证方式”的header</span></span><br><span class="line">                ctx.set(&#123; <span class="string">'WWW-Authenticate'</span>: <span class="string">'Bearer'</span> &#125;);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="引入以上组件"><a href="#引入以上组件" class="headerlink" title="引入以上组件"></a>引入以上组件</h4><p>将以上的组件添加到<code>app.js</code>中，此时代码看起来应该是这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /server/app.js */</span></span><br><span class="line"><span class="keyword">import</span> Koa <span class="keyword">from</span> <span class="string">'koa'</span></span><br><span class="line"><span class="keyword">import</span> koaBodyParser <span class="keyword">from</span> <span class="string">'koa-bodyparser'</span></span><br><span class="line"><span class="keyword">import</span> json <span class="keyword">from</span> <span class="string">'koa-json'</span></span><br><span class="line"><span class="keyword">import</span> path <span class="keyword">from</span> <span class="string">'path'</span></span><br><span class="line"><span class="keyword">import</span> errorHandler <span class="keyword">from</span> <span class="string">'./middlewares/error-handler.js'</span></span><br><span class="line"><span class="keyword">import</span> jwtResolver <span class="keyword">from</span> <span class="string">'./middlewares/auth/jwt-resolver.js'</span></span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">'./router.js'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa();</span><br><span class="line"></span><br><span class="line">app.use(errorHandler)</span><br><span class="line">app.use(koaBodyParser());</span><br><span class="line">app.use(json());</span><br><span class="line">app.use(jwtResolver);</span><br><span class="line">app.use(<span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">    ctx.body = &#123; <span class="attr">msg</span>: <span class="string">"Hello World"</span>, <span class="attr">path</span>: ctx.path, <span class="attr">method</span>: ctx.method &#125;;</span><br><span class="line">    <span class="keyword">await</span> next();</span><br><span class="line">&#125;);</span><br><span class="line">app.use(router.routes());</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3000</span>);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>需要提前创建数据库，但不需要提前创建表</p>
+</blockquote>
+<p>运行<code>npm run serve-koa</code>，启动服务，控制台打印：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; vue-koa@0.1.0 serve-koa D:\pcode\vue-koa</span><br><span class="line">&gt; node server.dev.js</span><br><span class="line"></span><br><span class="line">Executing (default): CREATE TABLE IF NOT EXISTS `users` (`id` CHAR(36) BINARY DEFAULT <span class="string">'fc0870f8-faf7-4f23-9eee-65f869bff791'</span> , `name` VARCHAR(255) NOT NULL, `passwd` VARCHAR(255) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;</span><br><span class="line">Executing (default): CREATE TABLE IF NOT EXISTS `roles` (`id` CHAR(36) BINARY DEFAULT <span class="string">'df463adb-be07-4c6c-9db7-46be31fbf725'</span> , `uid` VARCHAR(255) NOT NULL, `role` VARCHAR(255) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;</span><br><span class="line">Executing (default): SHOW INDEX FROM `roles`</span><br><span class="line">== Table: Role init!</span><br><span class="line">Executing (default): SHOW INDEX FROM `users`</span><br><span class="line">== Table: User init!</span><br></pre></td></tr></table></figure>
+<p>向数据库生成的user表中插入一条记录：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`vueDemo`</span>.<span class="string">`users`</span> (<span class="string">`name`</span>, <span class="string">`passwd`</span>) <span class="keyword">VALUES</span> (<span class="string">'root'</span>, <span class="string">'root'</span>);</span><br></pre></td></tr></table></figure>
+<p>接下来使用postman进行接口测试：</p>
+<ul>
+<li><code>/api/auth</code></li>
+</ul>
+<p><img src="https://ghamster.gitee.io/ihservice/Vue_Koa开发实战/接口测试1.png" alt="接口测试1"></p>
+<ul>
+<li><code>/api/user</code></li>
+</ul>
+<p>将上一个接口测试返回的token添加到请求<code>Header</code>，测试结果如图：</p>
+<p><img src="https://ghamster.gitee.io/ihservice/Vue_Koa开发实战/接口测试2.png" alt="接口测试2"></p>
+<p>本节源码：<a href="https://github.com/Ghamster0/vue-koa/tree/v0.2" target="_blank" rel="noopener">GitHub Tag V0.2</a></p>
+<h2 id="前后端对接"><a href="#前后端对接" class="headerlink" title="前后端对接"></a>前后端对接</h2><p>在<em>前端页面构建</em>章节中，我们实现了基本的页面跳转逻辑；本节将在此基础上，对接后端服务，实现登录验证</p>
+<p>前端登录流程：</p>
+<ul>
+<li>用户在登录界面点击登录，前端将用户名和密码发送给<code>/api/auth</code>接口获取token</li>
+<li>将获取到的token存储到浏览器的<code>sessionStorage</code></li>
+<li>前端访问后端接口的请求都携带该token</li>
+<li>设置路由守卫，跳转到受保护路由时检测<code>sessinStroge</code>，若token无效则跳转到登录界面</li>
+</ul>
+<p>项目使用<code>fetch</code>发送<code>http</code>请求，为了确保所有请求均携带token，并能响应token过期、无效等情况，可以对<code>fetch</code>做简单的封装放到<code>utils.js</code>中</p>
+<p>另外，前后端分离会导致跨域问题，简单来说：假设前端服务运行在<code>localhost:8080</code>，后端服务运行在<code>localhost:3000</code>端口，由于浏览器中的页面是由8080端口的前端服务返回，那么页面的<code>js</code>代码只能发送到<code>localhost:8080</code>的请求，在页面中调用3000端口的<code>api</code>属于跨域。解决这个问题的方式总体有三种：</p>
+<ol>
+<li>声明允许跨域</li>
+<li>使用反向代理代理转发，如使用<code>nginx</code>将发送到8080端口，<code>/api</code>前缀的请求转发到3000端口，使得在浏览器“看来”请求并没有跨域</li>
+<li>消除跨域，将前端代码打包成静态文件，挂到后端服务下</li>
+</ol>
+<p>这里采用第二种，在前端定义一个代理，转发<code>/api</code>前缀的请求，在<code>vue.config.js</code>中添加：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /vue.config.js */</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    devServer: &#123;</span><br><span class="line">        proxy: &#123;</span><br><span class="line">            <span class="string">'/api'</span>: &#123;</span><br><span class="line">                target: <span class="string">'http://localhost:3000/'</span>,</span><br><span class="line">                changeOrigin: <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="登录验证"><a href="#登录验证" class="headerlink" title="登录验证"></a>登录验证</h3><p>登录验证逻辑在<code>Login.vue</code>中，部分代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /src/components/pages/Login.vue */</span></span><br><span class="line"><span class="keyword">import</span> utils <span class="keyword">from</span> <span class="string">"../../utils.js"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  data() &#123;...&#125;, <span class="comment">//定义account, password, targetUrl(=this.$route.query.targetUrl)</span></span><br><span class="line">  methods: &#123;</span><br><span class="line">    login() &#123;</span><br><span class="line">      <span class="keyword">let</span> auth = &#123; <span class="comment">//绑定到form表单的数据</span></span><br><span class="line">        name: <span class="keyword">this</span>.account,</span><br><span class="line">        passwd: <span class="keyword">this</span>.password</span><br><span class="line">      &#125;;</span><br><span class="line">      fetch(<span class="string">"/api/auth"</span>, &#123;</span><br><span class="line">        method: <span class="string">"POST"</span>,</span><br><span class="line">        headers: &#123; <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span> &#125;,</span><br><span class="line">        body: <span class="built_in">JSON</span>.stringify(auth)</span><br><span class="line">      &#125;)</span><br><span class="line">        .then(<span class="function"><span class="params">res</span> =&gt;</span> res.json())</span><br><span class="line">        .then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">if</span> (res.code === <span class="number">2000</span>) &#123;</span><br><span class="line">            utils.saveToken(res.token); <span class="comment">//将token保存到sessionStroge</span></span><br><span class="line">            <span class="keyword">this</span>.onAuthSuccess();</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.onAuthFail();</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">    onAuthSuccess() &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">this</span>.targetUrl) &#123; <span class="comment">//判断用户是直接访问登录页还是被重定向登录页</span></span><br><span class="line">        <span class="keyword">this</span>.$router.push(&#123; <span class="attr">path</span>: <span class="keyword">this</span>.targetUrl &#125;);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.$router.push(&#123; <span class="attr">path</span>: <span class="string">"/"</span> &#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;，</span><br><span class="line">    onAuthFail() &#123;...&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>注销登陆非常简单，只需清空<code>sessionStroge</code>即可</p>
+<h3 id="路由守卫"><a href="#路由守卫" class="headerlink" title="路由守卫"></a>路由守卫</h3><p>在<code>router.js</code>中，添加路由守卫，在路由跳转前判断路由是否受保护，以及<code>sessionStroge</code>中是否存储了有效token</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /src/router.js */</span></span><br><span class="line"><span class="keyword">import</span> utils <span class="keyword">from</span> <span class="string">'./utils.js'</span></span><br><span class="line"></span><br><span class="line">router.beforeEach(<span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (to.path === <span class="string">'/login'</span> || utils.vaildToken()) &#123;</span><br><span class="line">        next();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// targetUrl记录当前url，以便登录成功后跳转会当前页面</span></span><br><span class="line">        next(&#123;<span class="attr">path</span>: <span class="string">'/login'</span>, <span class="attr">query</span>: &#123;<span class="attr">targetUrl</span>: to.fullPath&#125;&#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* /src/utils.js */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">vaildToken</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> token = sessionStorage.getItem(<span class="string">'access-token'</span>);</span><br><span class="line">    <span class="keyword">const</span> exp = sessionStorage.getItem(<span class="string">'exp'</span>);</span><br><span class="line">    <span class="keyword">return</span> token &amp;&amp; (<span class="built_in">Date</span>.now() &lt; exp * <span class="number">1000</span>) ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    vaildToken: vaildToken</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="封装fetch"><a href="#封装fetch" class="headerlink" title="封装fetch"></a>封装fetch</h3><p>这部分主要做三件事：发送请求前将token设置到header；收到响应后判断是否需要更新本地token；若请求失败，生成错误提示。<code>wrappedFetch</code>部分代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /src/utils */</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">wrappedFetch</span>(<span class="params">resource, init</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> token = getToken();</span><br><span class="line">    <span class="keyword">if</span> (token) &#123;</span><br><span class="line">        init.headers.Authorization = <span class="string">'Bearer '</span> + token; <span class="comment">//添加header</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> res = <span class="keyword">await</span> fetch(resource, init);</span><br><span class="line">    <span class="keyword">let</span> r = <span class="keyword">await</span> res.clone().json();</span><br><span class="line">    <span class="keyword">if</span> (res.ok) &#123;</span><br><span class="line">        <span class="keyword">if</span> (r.ut) &#123; <span class="comment">//如果ut(updateToken)字段非空，则更新本地token</span></span><br><span class="line">            saveToken(r.ut);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;...&#125; <span class="comment">//处理请求失败的情况</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    wrappedFetch: wrappedFetch</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>AC.vue</code>中，当点击refresh按钮时，使用<code>wrappedFetch</code>访问<code>/api/auth</code>接口，刷新user数据：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /src/components/pages/admin */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  methods: &#123;</span><br><span class="line">    refreshUser() &#123;</span><br><span class="line">      utils</span><br><span class="line">        .wrappedFetch(<span class="string">"/api/user"</span>, &#123; <span class="attr">methods</span>: <span class="string">"GET"</span> &#125;)</span><br><span class="line">        .then(<span class="function"><span class="params">res</span> =&gt;</span> res.json())</span><br><span class="line">        .then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">this</span>.user = res;</span><br><span class="line">        &#125;)</span><br><span class="line">        .catch(<span class="function"><span class="params">e</span> =&gt;</span> <span class="keyword">this</span>.$log.info(<span class="string">"Server error"</span>, e));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>登录并访问<code>http://localhost:8080/admin/info</code>，点击refresh，测试结果如下：</p>
+<p><img src="https://ghamster.gitee.io/ihservice/Vue_Koa开发实战/前端调用接口测试.png" alt="前端调用接口测试"></p>
+<p>点击“用户中心”-&gt;“退出登陆”确认功能正常</p>
+<p>本节源码：<a href="https://github.com/Ghamster0/vue-koa/tree/v0.3" target="_blank" rel="noopener">GitHub Tag V0.3</a></p>
+<h2 id="打包部署"><a href="#打包部署" class="headerlink" title="打包部署"></a>打包部署</h2><p>开发环境下，分别为前后端启动服务，可以方便地使用模块热重载特性（<code>vue cli</code>默认支持，<code>koa</code>可以使用<code>nodemon</code>实现），有助于快速开发。生产环境下，将前端构建成静态文件，挂载到被<code>babel</code>转换过的后端代码下，可以提供更好的性能。</p>
+<h3 id="项目构建"><a href="#项目构建" class="headerlink" title="项目构建"></a>项目构建</h3><p>配置<code>vue.config.js</code>，设置<code>vue cli</code>构建参数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /vue.config.js */</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    outputDir: <span class="string">'dist/dist'</span>, <span class="comment">// 构建输出目录，将后端转换后的代码放在dist下，将前端构建后的代码放在后端的dist下</span></span><br><span class="line">    assetsDir: <span class="string">'assets'</span> <span class="comment">// 提取asset到单独文件夹</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在项目下根目录下添加<code>server.babelrc</code>，作为后端<code>babel</code>转换的配置文件，转换目标为<code>node</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;presets&quot;: [</span><br><span class="line">        [</span><br><span class="line">            &quot;@babel/preset-env&quot;,</span><br><span class="line">            &#123;</span><br><span class="line">                &quot;targets&quot;: &#123;</span><br><span class="line">                    &quot;node&quot;: true</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>配置<code>package.json</code>中的启动脚本：</p>
+<ul>
+<li><code>serve-vue</code> 开发环境启动前端</li>
+<li><code>serve-koa</code> 开发环境启动后端</li>
+<li><code>build</code> 构建前端</li>
+<li><code>compile</code> 转换后端</li>
+<li><code>buildAll</code> 构建前后端</li>
+<li><code>start</code> 生产环境启动项目</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"serve-vue"</span>: <span class="string">"vue-cli-service serve --port 80"</span>,</span><br><span class="line">    <span class="attr">"serve-koa"</span>: <span class="string">"node server.dev.js"</span>,</span><br><span class="line">    <span class="attr">"build"</span>: <span class="string">"vue-cli-service build"</span>,</span><br><span class="line">    <span class="attr">"compile"</span>: <span class="string">"babel server -d dist --config-file ./server.babelrc --copy-files"</span>,</span><br><span class="line">    <span class="attr">"buildAll"</span>: <span class="string">"npm run compile &amp;&amp; npm run build"</span>,</span><br><span class="line">    <span class="attr">"start"</span>: <span class="string">"cd dist &amp;&amp; node app.js"</span>,</span><br><span class="line">    <span class="attr">"lint"</span>: <span class="string">"vue-cli-service lint"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>安装<code>koa static</code>，指令：<code>npm install koa-static</code></p>
+</blockquote>
+<p>还需要在后端代码中使用<code>koa-static</code>配置静态资源服务器，当所有路由匹配失败时尝试加载静态资源</p>
+<blockquote>
+<p>安装<code>histroy api fallback</code>，指令：<code>npm install koa2-history-api-fallback</code></p>
+</blockquote>
+<p>另外由于前端使用了<code>Vue Router</code>的history路由模式，形如<code>/login</code>的请求（hash模式下对应为<code>/index.html# /login</code>）是无法找到对应的静态资源的。该请求的本质是请求<code>/index.html</code>页面，然后执行前端路由<code>router.push(&#39;/login&#39;)</code>。所以需要添加<code>historyApiFallback</code>，将所有未匹配到后端路由的（前端）路由映射到<code>index.html</code></p>
+<p>代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /server/app.js */</span></span><br><span class="line">...</span><br><span class="line">app.use(router.routes());</span><br><span class="line"><span class="comment">// 一定放在router之后</span></span><br><span class="line">app.use(historyApiFallback());</span><br><span class="line">app.use(serve(path.resolve(<span class="string">'dist'</span>)));</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3000</span>);</span><br></pre></td></tr></table></figure>
+<p>至此，全部配置就完成了，然后我们运行<code>npm run buildAll &amp;&amp; npm run start</code>，访问<code>localhost:3000/login</code>，不出意外会看到以下界面：</p>
+<p><img src="https://ghamster.gitee.io/ihservice/Vue_Koa开发实战/页面未渲染.png" alt="页面未渲染"></p>
+<p>这是因为，<code>Koa</code>的默认返回<code>Content-Type</code>是<code>application/json</code>，而<code>koa static</code>未能正确设置该属性。我们可以使用<code>mime-types</code>识别资源类型，手动设置<code>Content-Type</code></p>
+<blockquote>
+<p>安装<code>mime-types</code>，指令：<code>npm install mime-types</code></p>
+</blockquote>
+<p>在<code>app.js</code>中添加一个中间件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* /server/app.js */</span></span><br><span class="line">app.use(historyApiFallback());</span><br><span class="line">app.use(<span class="keyword">async</span> (ctx, next)=&gt;&#123;</span><br><span class="line">    <span class="keyword">await</span> next();</span><br><span class="line">    ctx.set(<span class="string">'content-type'</span>, mime.lookup(path.join(<span class="string">'dist'</span>, ctx.path)) || <span class="string">'text/html'</span>);</span><br><span class="line">&#125;)</span><br><span class="line">app.use(serve(path.resolve(<span class="string">'dist'</span>)));</span><br></pre></td></tr></table></figure>
+<p>重新构建并运行，即可看到正确的页面</p>
+<h3 id="docker构建"><a href="#docker构建" class="headerlink" title="docker构建"></a>docker构建</h3><p><code>/server/secrets</code>下存储了数据库和<code>jwt</code>密钥等敏感信息，应当添加到<code>.gitignore</code>中，避免上传到github；同时我们不希望打包好的docker镜像中包含这些信息，而是从<code>docker secret</code>中加载。</p>
+<p>项目的依赖可以分为运行时依赖和开发环境依赖，为了使最终的镜像只包含运行时依赖，以及避免每次构建重新安装依赖，我们需要分别打包构建环境、运行时环境镜像，并使用两阶段构建生成最终镜像</p>
+<h4 id="存储敏感信息"><a href="#存储敏感信息" class="headerlink" title="存储敏感信息"></a>存储敏感信息</h4><p>首先在项目部署的docker服务器上，使用<code>docker secret</code>存储敏感信息。可以使用<code>docker secret create</code>命令，参见<a href="https://docs.docker.com/engine/swarm/secrets/" target="_blank" rel="noopener">docker文档</a>，或使用<code>Portainer</code>等工具。</p>
+<p>以<code>Portainer</code>为例（截图只做演示，文件名参考上文）：</p>
+<p><img src="https://ghamster.gitee.io/ihservice/Vue_Koa开发实战/创建secret.gif" alt="创建secret"></p>
+<p>secret会以文件的形式保存，在<code>docker-compose.yml</code>中指定使用后，会挂载到容器的<code>/run/secrets</code>下。接下来，修改后端的<code>config.js</code>，当运行环境为docker时，从<code>docker secrets</code>中加载这些配置：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="keyword">let</span> secretPath = <span class="string">'secrets'</span></span><br><span class="line"><span class="keyword">if</span> (process.env.ENV === <span class="string">'docker'</span>) &#123;</span><br><span class="line">    secretPath = <span class="string">'/run/secrets'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    SECRET: fs.readFileSync(path.resolve(__dirname, secretPath, <span class="string">'jwt-key.txt'</span>)),</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="打包docker镜像"><a href="#打包docker镜像" class="headerlink" title="打包docker镜像"></a>打包docker镜像</h4><blockquote>
+<p>为了防止copy命令拷贝<code>dist</code>、<code>node_modules</code>等目录下的文件，添加<code>.dockerignore</code>文件</p>
+</blockquote>
+<ol>
+<li>将构建环境打包为单独的镜像，指令及<code>build.Dockerfile</code>：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t vue-koa-build-env:latest -f ./dockerfiles/build.Dockerfile .</span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:lts-alpine</span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /build</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> package*.json ./</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> npm install</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>将运行环境打包为单独的镜像，指令及<code>runtime.Dockerfile</code>：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t vue-koa-runtime-env:latest -f ./dockerfiles/runtime.Dockerfile .</span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:lts-alpine</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> package*.json ./</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> npm install --production</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>打包项目镜像，指令及<code>Dockerfile</code> ：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t vue-koa:latest -f ./dockerfiles/Dockerfile .</span><br></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> vue-koa-build-<span class="keyword">env</span>:latest <span class="comment"># stage0: 基于构建环境，构建项目</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /build</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> npm run buildAll</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> vue-koa-runtime-<span class="keyword">env</span>:latest <span class="comment"># stage1: 基于运行环境，拷贝stage0的构建结果</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> --from=0 /build/dist ./dist</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ENV</span> <span class="keyword">ENV</span>=<span class="string">"docker"</span> <span class="comment"># 设置环境变量</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">3000</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"npm"</span>, <span class="string">"run"</span>, <span class="string">"start"</span>] <span class="comment"># 启动</span></span></span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>添加<code>docker-compose.yml</code>，配置加载的secrets，部分配置如下：</li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  vue_koa:</span></span><br><span class="line"><span class="attr">    secrets:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">db.json</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">jwt-key.txt</span></span><br><span class="line"></span><br><span class="line"><span class="attr">secrets:</span></span><br><span class="line">  <span class="string">db.json:</span></span><br><span class="line"><span class="attr">    external:</span> <span class="literal">true</span></span><br><span class="line">  <span class="string">jwt-key.txt:</span></span><br><span class="line"><span class="attr">    external:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>最后，在compose文件所在目录，执行<code>docker-compose up -d</code>即可启动服务</p>
+<p>本节源码：<a href="https://github.com/Ghamster0/vue-koa/tree/v0.4" target="_blank" rel="noopener">GitHub Tag V0.4</a></p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>蓦然想起当初面试百度的时候面试官的一句话：“语言不重要，重要的是…”，这句话的潜台词是“都得会！”。当然无论是用Java、Python还是JavaScript写Web，思想都是相通的，无非是不同语言提供了不同的特性</p>
+<p>但是啊，曾经沧海难为水，当年用Spring那一套时其实没有觉得哪里便捷了，面试问起来也无非就会说个AOP、IOC，至于好在哪里，始终一知半解，直到有一天离开了这生态。之前在知乎吐槽Js没有大型成熟的后端框架，有回复“Nestjs了解一下”，我还真的去了解了一下，IOC怎么看怎么怪，AOP完善程度被Spring按在地上摩擦……加上ts的语法……怎么说呢，ts是我见过最诡异最反直觉的语法，比golang都严重</p>
+<p>还用就是鸭子型语言用多了，真的挺怀念Java的……可能也就怀念下，万一回去了，大概又不习惯冗长的语法了，谁知道呢</p>
+<p>说到底，语言不过是个工具……</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Node/" rel="tag"># Node</a>
+          
+            <a href="/tags/Vue/" rel="tag"># Vue</a>
+          
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/18/Arrays-equals与vectorizedMismatch方法/" rel="next" title="Arrays.equals与ArraysSupport.vectorizedMismatch方法">
+                <i class="fa fa-chevron-left"></i> Arrays.equals与ArraysSupport.vectorizedMismatch方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Crazy Rookie">
+            
+              <p class="site-author-name" itemprop="name">Crazy Rookie</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Ghamster0" title="GitHub &rarr; https://github.com/Ghamster0" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="/xyty2012@outlook.com" title="E-Mail &rarr; xyty2012@outlook.com"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/initial-75" title="知乎 &rarr; https://www.zhihu.com/people/initial-75" rel="noopener" target="_blank"><i class="fa fa-fw fa-book"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建项目"><span class="nav-number">3.</span> <span class="nav-text">创建项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口定义"><span class="nav-number">4.</span> <span class="nav-text">接口定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取token"><span class="nav-number">4.1.</span> <span class="nav-text">获取token</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取当前用户信息"><span class="nav-number">4.2.</span> <span class="nav-text">获取当前用户信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前端页面构建"><span class="nav-number">5.</span> <span class="nav-text">前端页面构建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引入UI等组件"><span class="nav-number">5.1.</span> <span class="nav-text">引入UI等组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引入Vue-Router-建立二级路由"><span class="nav-number">5.2.</span> <span class="nav-text">引入Vue Router 建立二级路由</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后端服务搭建"><span class="nav-number">6.</span> <span class="nav-text">后端服务搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置运行环境"><span class="nav-number">6.1.</span> <span class="nav-text">配置运行环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义通用中间件"><span class="nav-number">6.2.</span> <span class="nav-text">定义通用中间件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接数据库"><span class="nav-number">6.3.</span> <span class="nav-text">连接数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现接口"><span class="nav-number">6.4.</span> <span class="nav-text">实现接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#User-service"><span class="nav-number">6.4.1.</span> <span class="nav-text">User service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限中间件"><span class="nav-number">6.4.2.</span> <span class="nav-text">权限中间件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置路由"><span class="nav-number">6.4.3.</span> <span class="nav-text">配置路由</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异常捕获"><span class="nav-number">6.4.4.</span> <span class="nav-text">异常捕获</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#引入以上组件"><span class="nav-number">6.4.5.</span> <span class="nav-text">引入以上组件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前后端对接"><span class="nav-number">7.</span> <span class="nav-text">前后端对接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#登录验证"><span class="nav-number">7.1.</span> <span class="nav-text">登录验证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路由守卫"><span class="nav-number">7.2.</span> <span class="nav-text">路由守卫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#封装fetch"><span class="nav-number">7.3.</span> <span class="nav-text">封装fetch</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打包部署"><span class="nav-number">8.</span> <span class="nav-text">打包部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#项目构建"><span class="nav-number">8.1.</span> <span class="nav-text">项目构建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker构建"><span class="nav-number">8.2.</span> <span class="nav-text">docker构建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#存储敏感信息"><span class="nav-number">8.2.1.</span> <span class="nav-text">存储敏感信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#打包docker镜像"><span class="nav-number">8.2.2.</span> <span class="nav-text">打包docker镜像</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写在最后"><span class="nav-number">9.</span> <span class="nav-text">写在最后</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Crazy Rookie</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '89a8749bb98c4612ca8e',
+    clientSecret: '2a07e38f4612566c82d6865e3bf168da1265cacc',
+    repo: 'Ghamster0.github.io',
+    owner: 'Ghamster0',
+    admin: ['Ghamster0'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

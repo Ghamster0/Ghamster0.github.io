@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="uL1SKjfKIZMEUOU77rLDMH7JfjC_Gz1JOACZ8-E6yAA">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="概述Java中可使用wait和notify(或notifyAll)方法同步对临界资源的访问这些方法在Object类中定义，因此可以在任何对象上调用在对象上调用wait方法使线程阻塞，在对象上调用notify或notifyAll会唤醒之前在该对象上调用wait阻塞的线程调用这些方法之前需要线程已经获取对象的锁（This method should only be called by a thread">
+<meta name="keywords" content="Java,多线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java中wait、notify与notifyAll">
+<meta property="og:url" content="https://ghamster0.github.io/2019/03/10/Java中wait、notify与notifyAll/index.html">
+<meta property="og:site_name" content="Ghamster Blog">
+<meta property="og:description" content="概述Java中可使用wait和notify(或notifyAll)方法同步对临界资源的访问这些方法在Object类中定义，因此可以在任何对象上调用在对象上调用wait方法使线程阻塞，在对象上调用notify或notifyAll会唤醒之前在该对象上调用wait阻塞的线程调用这些方法之前需要线程已经获取对象的锁（This method should only be called by a thread">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-09-10T08:05:51.423Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java中wait、notify与notifyAll">
+<meta name="twitter:description" content="概述Java中可使用wait和notify(或notifyAll)方法同步对临界资源的访问这些方法在Object类中定义，因此可以在任何对象上调用在对象上调用wait方法使线程阻塞，在对象上调用notify或notifyAll会唤醒之前在该对象上调用wait阻塞的线程调用这些方法之前需要线程已经获取对象的锁（This method should only be called by a thread">
+
+
+
+
+
+
+  <link rel="canonical" href="https://ghamster0.github.io/2019/03/10/Java中wait、notify与notifyAll/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Java中wait、notify与notifyAll | Ghamster Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ghamster Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">relax for a while...and go on 搬砖</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ghamster0.github.io/2019/03/10/Java中wait、notify与notifyAll/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Crazy Rookie">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ghamster Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java中wait、notify与notifyAll
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-03-10 15:43:03" itemprop="dateCreated datePublished" datetime="2019-03-10T15:43:03+08:00">2019-03-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-09-10 16:05:51" itemprop="dateModified" datetime="2019-09-10T16:05:51+08:00">2019-09-10</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Java中可使用<code>wait</code>和<code>notify</code>(或<code>notifyAll</code>)方法同步对临界资源的访问<br>这些方法在Object类中定义，因此可以在任何对象上调用<br>在对象上调用<code>wait</code>方法使线程阻塞，在对象上调用<code>notify</code>或<code>notifyAll</code>会唤醒之前在该对象上调用<code>wait</code>阻塞的线程<br>调用这些方法之前需要线程已经获取对象的锁（This method should only be called by a thread that is the owner of this object’s monitor），否则会抛出<code>java.lang.IllegalMonitorStateException</code>。因此只能在同步方法或同步代码块中使用</p>
+<a id="more"></a>
+<h2 id="wait"><a href="#wait" class="headerlink" title="wait"></a>wait</h2><ul>
+<li>阻塞当前线程，释放锁</li>
+<li><code>wait()</code>或<code>wait(0)</code>，为无限期阻塞（两者完全相同）；<code>wait(long timeoutMillis)</code>或<code>wait(long timeoutMillis, int nanos)</code>,若在参数指定时间内没有被唤醒或打断，自动恢复执行</li>
+<li>可以被<code>notify</code>或<code>notifyAll</code>唤醒</li>
+<li>可以被<code>interrupt</code>方法打断，抛出<code>InterruptedException</code>  </li>
+</ul>
+<h2 id="notify-amp-notifyAll"><a href="#notify-amp-notifyAll" class="headerlink" title="notify &amp; notifyAll"></a>notify &amp; notifyAll</h2><ul>
+<li><code>notify</code>: 唤醒一个在该对象上调用<code>wait</code>方法阻塞的线程</li>
+<li><code>notifyAll</code>: 唤醒所有在该对象上调用<code>wait</code>方法阻塞的线程  </li>
+</ul>
+<h2 id="notify与notifyAll测试"><a href="#notify与notifyAll测试" class="headerlink" title="notify与notifyAll测试"></a>notify与notifyAll测试</h2><p><code>notify</code>相对于<code>notifyAll</code>方法是一种性能优化，因为<code>notify</code>只会唤醒一个线程，但<code>notifyAll</code>会唤醒所有等待的线程，使他们竞争cpu；但同时，使用<code>notify</code>你必须确定被唤醒的是合适的线程  </p>
+<blockquote>
+<p>下面的测试代码展示了“必须唤醒合适线程的问题”  </p>
+</blockquote>
+<ul>
+<li><code>Critical</code>类只包含一个<code>Color</code>类的对象，通过对象初始化语句赋值为<code>Color.B</code>  </li>
+<li><code>ColorModifier</code>类实现了<code>Runnable</code>接口，包含三个域： <code>critical</code>、<code>target</code>和<code>to</code>，操作<code>critical</code>的<code>color</code>对象，当与目标颜色<code>target</code>相符时，将颜色修改为<code>to</code>指定的值。</li>
+<li><code>main</code>方法中，依次创建三个<code>ColorModifier</code>类的实例，分别为<strong>R-&gt;G</strong>，<strong>G-&gt;B</strong>，<strong>B-&gt;R</strong>，交给<code>ExectorService</code>执行，30s后关闭<code>ExectorService</code>，三个线程收到<code>InterruptedException</code>退出  </li>
+</ul>
+<p>使用<code>notifyAll</code>的测试代码如下：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main.test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutorService;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestNotify</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">enum</span> Color &#123;R, G, B&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Critical</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> Color color = Color.R;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ColorModifier</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> Critical critical;</span><br><span class="line">        <span class="keyword">private</span> Color target;</span><br><span class="line">        <span class="keyword">private</span> Color to;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">ColorModifier</span><span class="params">(Critical critical, Color target, Color to)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.critical = critical;</span><br><span class="line">            <span class="keyword">this</span>.target = target;</span><br><span class="line">            <span class="keyword">this</span>.to = to;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.printf(<span class="string">"-&gt; Thread start: Modifier %s to %s\n"</span>, target, to);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">while</span> (!Thread.interrupted()) &#123;</span><br><span class="line">                    <span class="keyword">synchronized</span> (critical) &#123;</span><br><span class="line">                        <span class="keyword">while</span> (critical.color != target) &#123;</span><br><span class="line">                            System.out.printf(<span class="string">"  - Wait: Modifier %s -&gt; %s, Current color: %s\n"</span>, target, to, critical.color);</span><br><span class="line">                            critical.wait();</span><br><span class="line">                            System.out.printf(<span class="string">"  + Resume from wait: Modifier %s -&gt; %s, Current color: %s\n"</span>, target, to, critical.color);</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="comment">//change critical.color and notify others</span></span><br><span class="line">                        critical.color = to;</span><br><span class="line">                        System.out.printf(<span class="string">"\n&gt;&gt;&gt; Color changed: %s to %s!\n"</span>, target, to);</span><br><span class="line">                        TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">                        critical.notifyAll();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                System.out.printf(<span class="string">"Thread Modifier %s -&gt; %s exit!\n"</span>, target, to);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">            ExecutorService exec = Executors.newCachedThreadPool();</span><br><span class="line">            Critical c = <span class="keyword">new</span> Critical();</span><br><span class="line">            exec.execute(<span class="keyword">new</span> ColorModifier(c, Color.R, Color.G));</span><br><span class="line">            exec.execute(<span class="keyword">new</span> ColorModifier(c, Color.G, Color.B));</span><br><span class="line">            exec.execute(<span class="keyword">new</span> ColorModifier(c, Color.B, Color.R));</span><br><span class="line">            TimeUnit.SECONDS.sleep(<span class="number">30</span>);</span><br><span class="line">            exec.shutdownNow();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出如下：  </p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span><span class="bash"> Thread start: Modifier R to G</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Color changed: R to G!</span></span><br><span class="line"><span class="meta">-&gt;</span><span class="bash"> Thread start: Modifier B to R</span></span><br><span class="line"><span class="meta">-&gt;</span><span class="bash"> Thread start: Modifier G to B</span></span><br><span class="line">  - Wait: Modifier R -&gt; G, Current color: G</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Color changed: G to B!</span></span><br><span class="line">  - Wait: Modifier G -&gt; B, Current color: B</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Color changed: B to R!</span></span><br><span class="line">  - Wait: Modifier B -&gt; R, Current color: R</span><br><span class="line">  + Resume from wait: Modifier G -&gt; B, Current color: R</span><br><span class="line">  - Wait: Modifier G -&gt; B, Current color: R</span><br><span class="line">  + Resume from wait: Modifier R -&gt; G, Current color: R</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Color changed: R to G!</span></span><br><span class="line">  - Wait: Modifier R -&gt; G, Current color: G</span><br><span class="line">  + Resume from wait: Modifier B -&gt; R, Current color: G</span><br><span class="line">  - Wait: Modifier B -&gt; R, Current color: G</span><br><span class="line">  + Resume from wait: Modifier G -&gt; B, Current color: G</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Color changed: G to B!</span></span><br><span class="line">  - Wait: Modifier G -&gt; B, Current color: B</span><br><span class="line">  + Resume from wait: Modifier R -&gt; G, Current color: B</span><br><span class="line">  - Wait: Modifier R -&gt; G, Current color: B</span><br><span class="line">  + Resume from wait: Modifier B -&gt; R, Current color: B</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Color changed: B to R!</span></span><br><span class="line">... ...</span><br><span class="line">Thread Modifier B -&gt; R exit!</span><br><span class="line">Thread Modifier R -&gt; G exit!</span><br><span class="line">Thread Modifier G -&gt; B exit!</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
+<p>任意时刻，系统中有三个<code>ColorModifier</code>的线程（更严谨的表述是：target为ColorModifer对象的线程）RtoG、GtoB和BtoR，假设RtoG修改颜色后（console第17行），调用<code>notifyAll</code>方法，使GtoB、BtoR线程被唤醒，三个线程均可开始（继续）执行。当前颜色为<code>Color.G</code>，执行至代码32行，RtoG和BtoR调用<code>wait</code>阻塞，GtoB修改颜色并调用<code>notifyAll</code>方法，如此往复  </p>
+<p>测试<code>notify</code>方法时，将第40行代码修改为<code>critical.notify();</code>，输出如下：  </p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">-&gt;</span><span class="bash"> Thread start: Modifier B to R</span></span><br><span class="line"><span class="meta">-&gt;</span><span class="bash"> Thread start: Modifier R to G</span></span><br><span class="line"><span class="meta">-&gt;</span><span class="bash"> Thread start: Modifier G to B</span></span><br><span class="line">  - Wait: Modifier B -&gt; R, Current color: R</span><br><span class="line">  - Wait: Modifier G -&gt; B, Current color: R</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Color changed: R to G!</span></span><br><span class="line">  - Wait: Modifier R -&gt; G, Current color: G</span><br><span class="line">  + Resume from wait: Modifier B -&gt; R, Current color: G</span><br><span class="line">  - Wait: Modifier B -&gt; R, Current color: G</span><br><span class="line">Thread Modifier B -&gt; R exit!</span><br><span class="line">Thread Modifier R -&gt; G exit!</span><br><span class="line">Thread Modifier G -&gt; B exit!</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
+<p>每次运行测试得到的输出各不相同，但几乎所有的测试都会导致死锁，直到时间耗尽，调用<code>ExectorService.shutdownNow()</code>结束程序。以本次运行结果为例，RtoG、GtoB和BtoR依次启动，<code>Critical</code>对象初始颜色为<code>Color.R</code>。执行至代码32行，BtoR和GtoB调用<code>wait</code>阻塞（对应console第4-5行）；RtoG将颜色修改为<code>Color.G</code>，调用<code>notify</code>方法，BtoR被唤醒；RtoG继续执行，经过代码32行判断后调用<code>wait</code>阻塞；BtoR被唤醒后，经过32行同样调用<code>wait</code>阻塞 – 至此三个线程全部阻塞，程序陷入死锁。  </p>
+<blockquote>
+<p>对于本程序而言，“合适的线程”是指：BtoR的notify必须唤醒RtoG，RtoG的notify必须唤醒GtoB，GtoB的notify必须唤醒BtoR</p>
+</blockquote>
+<h2 id="one-more-thing"><a href="#one-more-thing" class="headerlink" title="one more thing"></a>one more thing</h2><p>如果对测试代码稍作修改会发生有趣的事情：</p>
+<ol>
+<li>将<code>Critical</code>对象的<code>color</code>属性初始值设为<code>Color.B</code>（12行）</li>
+<li>在<code>main</code>方法的每个<code>exec.execute()</code>方法后插入<code>TimeUnit.SECONDS.sleep(1);</code>，插入后代码如下：  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    ExecutorService exec = Executors.newCachedThreadPool();</span><br><span class="line">    Critical c = <span class="keyword">new</span> Critical();</span><br><span class="line">    exec.execute(<span class="keyword">new</span> ColorModifier(c, Color.R, Color.G));</span><br><span class="line">    TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">    exec.execute(<span class="keyword">new</span> ColorModifier(c, Color.G, Color.B));</span><br><span class="line">    TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">    exec.execute(<span class="keyword">new</span> ColorModifier(c, Color.B, Color.R));</span><br><span class="line">    TimeUnit.SECONDS.sleep(<span class="number">30</span>);</span><br><span class="line">    exec.shutdownNow();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>此时会得到如下输出:<br><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Color changed: B to R!</span></span><br><span class="line">  - Wait: Modifier B -&gt; R, Current color: R</span><br><span class="line">  + Resume from wait: Modifier R -&gt; G, Current color: R</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Color changed: R to G!</span></span><br><span class="line">  - Wait: Modifier R -&gt; G, Current color: G</span><br><span class="line">  + Resume from wait: Modifier G -&gt; B, Current color: G</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt; Color changed: G to B!</span></span><br><span class="line">  - Wait: Modifier G -&gt; B, Current color: B</span><br><span class="line">  + Resume from wait: Modifier B -&gt; R, Current color: B</span><br></pre></td></tr></table></figure></p>
+<p>程序并未出现死锁！似乎BtoR的<code>notify</code>总会唤醒RtoG，RtoG会唤醒GtoB，GtoB会唤醒BtoR<br>换言之，<code>notify</code>被调用时，唤醒的线程不是随机的，而是所有阻塞的线程中，最早调用<code>wait</code>的那个</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><blockquote>
+<p>测试环境：window x64，jdk11  </p>
+</blockquote>
+<ul>
+<li>内部类<code>WaitAndNotify</code>实现了<code>Runnable</code>接口，构造方法需要传入一个<code>Object</code>对象（o）</li>
+<li>在<code>run</code>方法中，首先调用<code>o.wait()</code>阻塞，被唤醒后调用<code>o.notify()</code></li>
+<li><code>main</code>方法依次产生<code>THREAD_NUMBERS</code>个使用<code>WaitAndNotify</code>对象创建的线程，并交由<code>ExecutorService</code>执行；在<code>main</code>方法中调用<code>notify</code>，引发链式反应，使所有线程依次执行</li>
+<li>使用<code>CountDownLatch</code>计数，所有线程完成后，关闭<code>ExecutorService</code>退出程序  </li>
+</ul>
+<p>测试代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main.test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.CountDownLatch;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutorService;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestSynchronizedLockOrder</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> THREAD_NUMBERS = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">WaitAndNotify</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> id = count++;</span><br><span class="line">        <span class="keyword">private</span> CountDownLatch countDownLatch;</span><br><span class="line">        <span class="keyword">private</span> Object o;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">WaitAndNotify</span><span class="params">(Object o, CountDownLatch c)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.o = o;</span><br><span class="line">            <span class="keyword">this</span>.countDownLatch = c;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (o) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    System.out.println(<span class="string">"WAN id="</span> + id + <span class="string">" call wait"</span>);</span><br><span class="line">                    o.wait();</span><br><span class="line">                    TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">                    System.out.println(<span class="string">"WAN id="</span> + id + <span class="string">" running"</span>);</span><br><span class="line">                    o.notify();</span><br><span class="line">                    System.out.println(<span class="string">"WAN id="</span> + id + <span class="string">" call notify"</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            countDownLatch.countDown();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        Object o = <span class="keyword">new</span> Object();</span><br><span class="line">        CountDownLatch countDownLatch = <span class="keyword">new</span> CountDownLatch(THREAD_NUMBERS);</span><br><span class="line">        ExecutorService e = Executors.newCachedThreadPool();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; THREAD_NUMBERS; i++) &#123;</span><br><span class="line">            e.execute(<span class="keyword">new</span> WaitAndNotify(o, countDownLatch));</span><br><span class="line">            TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"===================\nAll thread started!\n==================="</span>);</span><br><span class="line">        <span class="keyword">synchronized</span> (o) &#123;</span><br><span class="line">            o.notify();</span><br><span class="line">        &#125;</span><br><span class="line">        countDownLatch.await();</span><br><span class="line">        e.shutdownNow();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>程序输出如下：<br><figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">WAN id=0 call wait</span><br><span class="line">WAN id=1 call wait</span><br><span class="line">WAN id=2 call wait</span><br><span class="line">WAN id=3 call wait</span><br><span class="line">WAN id=4 call wait</span><br><span class="line">===================</span><br><span class="line">All thread started!</span><br><span class="line">===================</span><br><span class="line">WAN id=0 running</span><br><span class="line">WAN id=0 call notify</span><br><span class="line">WAN id=1 running</span><br><span class="line">WAN id=1 call notify</span><br><span class="line">WAN id=2 running</span><br><span class="line">WAN id=2 call notify</span><br><span class="line">WAN id=3 running</span><br><span class="line">WAN id=3 call notify</span><br><span class="line">WAN id=4 running</span><br><span class="line">WAN id=4 call notify</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure></p>
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>显然，在本平台上调用<code>notify</code>方法时，被唤醒的永远是最早调用<code>wait</code>方法阻塞的线程，但这个结论是否具有普遍性？</p>
+<p>jdk文档对于notify的描述如下：</p>
+<blockquote>
+<p>Wakes up a single thread that is waiting on this object’s monitor. If any threads are waiting on this object, one of them is chosen to be awakened. The choice is arbitrary and occurs at the discretion of the implementation…<br>The awakened thread will not be able to proceed until the current thread relinquishes the lock on this object. The awakened thread will compete in the usual manner with any other threads that might be actively competing to synchronize on this object…  </p>
+</blockquote>
+<p>参考jdk文档的内容，总结来说有两点：</p>
+<ol>
+<li>调用<code>notify</code>方法会唤醒一个阻塞的线程，且这个线程是随机的，且不同平台可以有不同实现</li>
+<li>被唤醒的线程需要竞争临界资源，相比于其他线程不具有更高或更低的优先级</li>
+</ol>
+<p>因此，这种测试结果只能算平台的特例……</p>
+<p>《全剧终》</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/多线程/" rel="tag"># 多线程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/02/Mysql-安装记录/" rel="next" title="MySQL 安装记录">
+                <i class="fa fa-chevron-left"></i> MySQL 安装记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/12/Hexo Blog折腾笔记/" rel="prev" title="Hexo Blog折腾笔记">
+                Hexo Blog折腾笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Crazy Rookie">
+            
+              <p class="site-author-name" itemprop="name">Crazy Rookie</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Ghamster0" title="GitHub &rarr; https://github.com/Ghamster0" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="/xyty2012@outlook.com" title="E-Mail &rarr; xyty2012@outlook.com"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/initial-75" title="知乎 &rarr; https://www.zhihu.com/people/initial-75" rel="noopener" target="_blank"><i class="fa fa-fw fa-book"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wait"><span class="nav-number">2.</span> <span class="nav-text">wait</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#notify-amp-notifyAll"><span class="nav-number">3.</span> <span class="nav-text">notify &amp; notifyAll</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#notify与notifyAll测试"><span class="nav-number">4.</span> <span class="nav-text">notify与notifyAll测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#one-more-thing"><span class="nav-number">5.</span> <span class="nav-text">one more thing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">5.1.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-number">5.2.</span> <span class="nav-text">结论</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Crazy Rookie</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '89a8749bb98c4612ca8e',
+    clientSecret: '2a07e38f4612566c82d6865e3bf168da1265cacc',
+    repo: 'Ghamster0.github.io',
+    owner: 'Ghamster0',
+    admin: ['Ghamster0'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
