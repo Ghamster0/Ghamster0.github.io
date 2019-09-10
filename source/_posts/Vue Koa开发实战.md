@@ -1061,6 +1061,7 @@ secrets:
 本节源码：[GitHub Tag V0.4](https://github.com/Ghamster0/vue-koa/tree/v0.4)
 
 ## 写在最后
+
 之前刚完成的一个项目，使用了`Flask+Jinja2+JQuery`的技术栈，写的很不开心：模板渲染+`ajax`混用导致代码有些凌乱；缺失`ioc&aop`；`Flask`没有异步非阻塞……于是下一个项目选型的时候，我打算用`SpringBoot+Vue`，但方案被领导驳回，要求使用`nodejs`，于是就有了这篇新手向博客
 
 蓦然想起当初面试百度的时候面试官的一句话：“语言不重要，重要的是...”，这句话的潜台词是“都得会！”。当然无论是用Java、Python还是JavaScript写Web，思想都是相通的，无非是不同语言提供了不同的特性
