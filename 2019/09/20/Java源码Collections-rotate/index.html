@@ -110,7 +110,7 @@
 <meta property="og:site_name" content="Ghamster Blog">
 <meta property="og:description" content="Collections.rotate用于列表的旋转(平移)操作，即列表中所有元素左移n位。rotate操作有两种实现方式，分别适用不同的情况：  当列表实现了RandomAccess，如列表底层为数组，或列表底层为双向链表，但元素不太多时：  选取一个元素a，选取a后第n位元素b，将a放入b所在位置；选取b后第n位元素c，将b放入c所在位置……直到所有元素都被移动  为确保所有元素都被移动，需要记">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-09-20T10:00:48.061Z">
+<meta property="og:updated_time" content="2019-09-20T10:22:37.032Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java源码Collections.rotate">
 <meta name="twitter:description" content="Collections.rotate用于列表的旋转(平移)操作，即列表中所有元素左移n位。rotate操作有两种实现方式，分别适用不同的情况：  当列表实现了RandomAccess，如列表底层为数组，或列表底层为双向链表，但元素不太多时：  选取一个元素a，选取a后第n位元素b，将a放入b所在位置；选取b后第n位元素c，将b放入c所在位置……直到所有元素都被移动  为确保所有元素都被移动，需要记">
@@ -422,7 +422,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-09-20 18:00:48" itemprop="dateModified" datetime="2019-09-20T18:00:48+08:00">2019-09-20</time>
+                <time title="Modified: 2019-09-20 18:22:37" itemprop="dateModified" datetime="2019-09-20T18:22:37+08:00">2019-09-20</time>
               
             
           </span>
@@ -462,7 +462,7 @@
 <ul>
 <li><p>选取一个元素a，选取a后第n位元素b，将a放入b所在位置；选取b后第n位元素c，将b放入c所在位置……直到所有元素都被移动</p>
 </li>
-<li><p>为确保所有元素都被移动，需要记录当前已移动次数，和起始元素。当下一个位置刚好与起始元素位置相同且移动次数小于总元素个数时，说明出现列表长度为n的整数倍，需要重新选取还未移动的位置继续操作</p>
+<li><p>为确保所有元素都被移动，需要记录当前已移动次数，和起始元素。当下一个位置刚好与起始元素位置相同且移动次数小于总元素个数时，说明出现列表长度为n的整数倍，需要重新选取还未移动的位置，作为新的起始点，继续操作</p>
 </li>
 </ul>
 </li>
@@ -524,6 +524,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/20/找出第n大的数/" rel="prev" title="找出第n大的数">
+                找出第n大的数 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -589,7 +593,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -624,7 +628,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">8</span>
+                      
+                    
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
