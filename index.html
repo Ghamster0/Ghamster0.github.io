@@ -358,6 +358,182 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ghamster0.github.io/2019/09/20/Java源码Collections-rotate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Crazy Rookie">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ghamster Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/09/20/Java源码Collections-rotate/" class="post-title-link" itemprop="url">Java源码Collections.rotate</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-09-20 17:14:26" itemprop="dateCreated datePublished" datetime="2019-09-20T17:14:26+08:00">2019-09-20</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-09-20 17:57:04" itemprop="dateModified" datetime="2019-09-20T17:57:04+08:00">2019-09-20</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><code>Collections.rotate</code>用于列表的旋转(平移)操作，即列表中所有元素左移n位</p>
+<p>rotate操作有两种实现方式，分别适用不同的情况：</p>
+<ul>
+<li><p>当列表实现了<code>RandomAccess</code>，如列表底层为数组，或列表底层为双向链表，但元素不太多时：</p>
+<ul>
+<li>选取一个元素a，选取a后第n位元素b，将a放入b所在位置；选取b后第n位元素c，将b放入c所在位置……直到所有元素都被移动</li>
+<li>为确保所有元素都被移动，需要记录当前已移动次数，和起始元素。当下一个位置刚好与起始元素位置相同且移动次数小于总元素个数时，说明出现列表长度为n的整数倍，需要重新选取还未移动的位置继续操作</li>
+</ul>
+</li>
+<li><p>当列表底层为双向链表且较长时：</p>
+<ul>
+<li>使用翻转操作实现，首先对前<code>l-n</code>位翻转，然后对后n位翻转，最后整体翻转</li>
+<li>翻转通过<code>Collections.reverse</code>方法实现。对于双向链表，翻转操作需要一个首指针和一个尾指针，操作整体时间复杂度为O(n)</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/09/20/Java源码Collections-rotate/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://ghamster0.github.io/2019/09/10/Vue Koa开发实战/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1208,7 +1384,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
