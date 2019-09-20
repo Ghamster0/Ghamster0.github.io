@@ -529,7 +529,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://ghamster0.github.io/2019/03/18/Arrays-equals与vectorizedMismatch方法/">
+    <link itemprop="mainEntityOfPage" href="https://ghamster0.github.io/2019/03/18/Arrays数组判等 equals与mismatch/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Crazy Rookie">
@@ -549,7 +549,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/03/18/Arrays-equals与vectorizedMismatch方法/" class="post-title-link" itemprop="url">Arrays.equals与ArraysSupport.vectorizedMismatch方法</a>
+                <a href="/2019/03/18/Arrays数组判等 equals与mismatch/" class="post-title-link" itemprop="url">Arrays数组判等 equals与mismatch</a>
               
             
           </h1>
@@ -591,7 +591,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-09-10 16:08:19" itemprop="dateModified" datetime="2019-09-10T16:08:19+08:00">2019-09-10</time>
+                <time title="Modified: 2019-09-20 17:10:48" itemprop="dateModified" datetime="2019-09-20T17:10:48+08:00">2019-09-20</time>
               
             
           </span>
@@ -628,14 +628,14 @@
         
           <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
 <li><code>Arrays</code>类是Java中用于数组操作的工具类，实现了比较、复制、查找和排序等常用操作</li>
-<li><code>equals</code>方法用于判断数组是否相等，包含了各种基本类型和<code>Object</code>类型的重载版本，对于<code>Object[]</code>会判断对象非空，并调用<code>Object.equals</code>判断对象是否相等</li>
-<li><code>ArraysSupport</code>类是<code>jdk11</code>（似乎是在<code>jdk9</code>引入）的工具类，提供了<code>mismatch</code>方法和<code>vectorizedMismatch</code>。<code>mismatch</code>方法可以返回两个被判定的数组对象中，首个不相等元素的下标</li>
-<li><code>jdk11</code>中使用<code>mismatch</code>方法修改了<code>equals</code>方法的实现逻辑</li>
+<li><code>equals</code>方法用于判断数组是否相等，包含了各种基本类型和<code>Object</code>类型的重载版本，对于<code>Object</code>数组<code>Object.equals</code>进行判断</li>
+<li><code>ArraysSupport</code>类是<code>jdk11</code>（似乎是在<code>jdk9</code>引入）的工具类，提供了<code>mismatch</code>方法，用于检查两个被判定的数组对象中，首个不相等元素的下标</li>
+<li><code>jdk11</code>中优化了<code>equals</code>方法的实现逻辑，在数组元素为基本数据类型的情况下，使用<code>mismatch</code>方法替代逐个元素比较的方式</li>
 </ul>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/03/18/Arrays-equals与vectorizedMismatch方法/#more" rel="contents">
+              <a class="btn" href="/2019/03/18/Arrays数组判等 equals与mismatch/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
