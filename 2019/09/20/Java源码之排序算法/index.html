@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+  <meta name="google-site-verification" content="uL1SKjfKIZMEUOU77rLDMH7JfjC_Gz1JOACZ8-E6yAA">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.6.2/css/font-awesome.min.css">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="常见的排序算法主要包括冒泡、插入、归并、希尔以及快排，教科书上也给出了算法的简单实现和原理解析。在实际使用中，编程语言提供的排序算法，通常是这些算法相结合的优化版本 Java的排序方法集中在java.util.Arrays类，主要有三大类：  对基本类型数组排序算法，封装在java.util.DualPivotQuicksort 对泛型数组的排序算法，封装在java.util.TimSort 多线">
+<meta name="keywords" content="Java,源码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java源码之排序算法">
+<meta property="og:url" content="https://ghamster0.github.io/2019/09/20/Java源码之排序算法/index.html">
+<meta property="og:site_name" content="Ghamster Blog">
+<meta property="og:description" content="常见的排序算法主要包括冒泡、插入、归并、希尔以及快排，教科书上也给出了算法的简单实现和原理解析。在实际使用中，编程语言提供的排序算法，通常是这些算法相结合的优化版本 Java的排序方法集中在java.util.Arrays类，主要有三大类：  对基本类型数组排序算法，封装在java.util.DualPivotQuicksort 对泛型数组的排序算法，封装在java.util.TimSort 多线">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-09-24T05:41:13.155Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java源码之排序算法">
+<meta name="twitter:description" content="常见的排序算法主要包括冒泡、插入、归并、希尔以及快排，教科书上也给出了算法的简单实现和原理解析。在实际使用中，编程语言提供的排序算法，通常是这些算法相结合的优化版本 Java的排序方法集中在java.util.Arrays类，主要有三大类：  对基本类型数组排序算法，封装在java.util.DualPivotQuicksort 对泛型数组的排序算法，封装在java.util.TimSort 多线">
+
+
+
+
+
+
+  <link rel="canonical" href="https://ghamster0.github.io/2019/09/20/Java源码之排序算法/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Java源码之排序算法 | Ghamster Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ghamster Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">relax for a while...and go on 搬砖</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ghamster0.github.io/2019/09/20/Java源码之排序算法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Crazy Rookie">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ghamster Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java源码之排序算法
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-09-20 18:31:32" itemprop="dateCreated datePublished" datetime="2019-09-20T18:31:32+08:00">2019-09-20</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-09-24 13:41:13" itemprop="dateModified" datetime="2019-09-24T13:41:13+08:00">2019-09-24</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>常见的排序算法主要包括冒泡、插入、归并、希尔以及快排，教科书上也给出了算法的简单实现和原理解析。在实际使用中，编程语言提供的排序算法，通常是这些算法相结合的优化版本</p>
+<p>Java的排序方法集中在<code>java.util.Arrays</code>类，主要有三大类：</p>
+<ul>
+<li>对基本类型数组排序算法，封装在<code>java.util.DualPivotQuicksort</code></li>
+<li>对泛型数组的排序算法，封装在<code>java.util.TimSort</code></li>
+<li>多线程排序方法<code>parallelSort</code></li>
+</ul>
+<p>本文将结合源码，分析<code>DualPivotQuicksort</code>排序算法，源码为<code>Oracle jdk1.8 java.util.DualPivotQuicksort</code></p>
+<a id="more"></a>
+<h2 id="DualPivotQuicksort-类"><a href="#DualPivotQuicksort-类" class="headerlink" title="DualPivotQuicksort 类"></a>DualPivotQuicksort 类</h2><p>虽然这个类的名字叫做<em>双枢轴快排</em>，但实际上这个类封装了上面提到的大多数排序算法。排序方法<code>sort</code>可以根据一些列策略，自动选取合适的算法对数组排序</p>
+<p>该类定义了几个常量：  </p>
+<table>
+<thead>
+<tr>
+<th>constant</th>
+<th>value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QUICKSORT_THRESHOLD</td>
+<td>286</td>
+</tr>
+<tr>
+<td>INSERTION_SORT_THRESHOLD</td>
+<td>47</td>
+</tr>
+<tr>
+<td>COUNTING_SORT_THRESHOLD_FOR_BYTE</td>
+<td>29</td>
+</tr>
+<tr>
+<td>COUNTING_SORT_THRESHOLD_FOR_SHORT_OR_CHAR</td>
+<td>3200</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>计数排序特别适合待排序数组特别长，类型本身可表示的值个数相对较少的情况，如<code>byte</code>。与其他类型数组排序相比，<code>byte</code>数组的排序多了一个判断步骤——当数组长度超过30（right-left+1）时，会触发计数排序。由于计数排序相对简单，在此不多做赘述。</p>
+</blockquote>
+<p>以<code>int</code>型数组为例，<code>sort</code>方法有两种签名，分别是：</p>
+<ul>
+<li><code>sort(int[] a, int left, int right, int[] work, int workBase, int workLen)</code>，访问权限为package，实现了归并排序算法。当数组长度较短时，调用下面的方法</li>
+<li><code>sort(int[] a, int left, int right, boolean leftmost)</code>，访问权限private，实现了快排和插入排序</li>
+</ul>
+<p>总结起来，排序算法选择策略如下（待排序数组长度L）：</p>
+<ol>
+<li>L &gt;= QUICKSORT_THRESHOLD：采用归并排序</li>
+<li>L &lt; QUICKSORT_THRESHOLD &amp;&amp; L &gt;= INSERTION_SORT_THRESHOLD：采用双枢轴快排</li>
+<li>L &lt; INSERTION_SORT_THRESHOLD：采用插入排序</li>
+</ol>
+<h2 id="Merge-Sort"><a href="#Merge-Sort" class="headerlink" title="Merge Sort"></a>Merge Sort</h2><p>使用归并排序的条件有三条：</p>
+<ol>
+<li>数组长度超过QUICKSORT_THRESHOLD</li>
+<li>数组局部有序</li>
+<li>数组不存在较多连续相等的元素</li>
+</ol>
+<h3 id="有序性判定"><a href="#有序性判定" class="headerlink" title="有序性判定"></a>有序性判定</h3><p>源码119~148行：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] run = <span class="keyword">new</span> <span class="keyword">int</span>[MAX_RUN_COUNT + <span class="number">1</span>];</span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>; run[<span class="number">0</span>] = left;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Check if the array is nearly sorted</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> k = left; k &lt; right; run[count] = k) &#123;</span><br><span class="line">    <span class="keyword">if</span> (a[k] &lt; a[k + <span class="number">1</span>]) &#123; <span class="comment">// ascending</span></span><br><span class="line">        <span class="keyword">while</span> (++k &lt;= right &amp;&amp; a[k - <span class="number">1</span>] &lt;= a[k]);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a[k] &gt; a[k + <span class="number">1</span>]) &#123; <span class="comment">// descending</span></span><br><span class="line">        <span class="keyword">while</span> (++k &lt;= right &amp;&amp; a[k - <span class="number">1</span>] &gt;= a[k]);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> lo = run[count] - <span class="number">1</span>, hi = k; ++lo &lt; --hi; ) &#123;</span><br><span class="line">            <span class="keyword">int</span> t = a[lo]; a[lo] = a[hi]; a[hi] = t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// equal</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> m = MAX_RUN_LENGTH; ++k &lt;= right &amp;&amp; a[k - <span class="number">1</span>] == a[k]; ) &#123;</span><br><span class="line">            <span class="keyword">if</span> (--m == <span class="number">0</span>) &#123;</span><br><span class="line">                sort(a, left, right, <span class="keyword">true</span>);</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * The array is not highly structured,</span></span><br><span class="line"><span class="comment">     * use Quicksort instead of merge sort.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">if</span> (++count == MAX_RUN_COUNT) &#123;</span><br><span class="line">        sort(a, left, right, <span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>归并排序优化的基本思路是，将原数组中原本有序的子序列检测出来，以这些子序列为初始划分进行排序。从而避免像传统的归并排序算法，为保证初始子序列有序，子序列长度只能设为1</p>
+<p>数组<code>run</code>用来记录序列中每段有序子序列的坐标范围，如<code>run[0]==0 &amp;&amp; run[1]==3</code>表示第一段有序序列起始索引为0，终止索引为2；变量<code>count</code>记录已检出的有序子序列个数</p>
+<p>for循环检索有序序列，并将值存储到<code>run</code>和<code>count</code>：</p>
+<ol>
+<li><p>前两个元素递增，检索后续递增元素</p>
+</li>
+<li><p>前两个递减，检索后续递减，然后将这段子序列reverse</p>
+</li>
+<li><p>前两个相等，检索后续相等。这里有个特殊情况，当连续相等的元素数量超过MAX_RUN_LENGTH时，认为相等元素过多，不再使用归并，而是调用快排方法解决</p>
+</li>
+</ol>
+<p>当<code>count</code>值超过MAX_RUN_COUNT时，同样退出归并，调用快排进行排序。因为<code>count</code>过大意味着平均有序子序列较短，即数组基本无序</p>
+<blockquote>
+<p>源码152~156处理了一下边界情况，当以上for循环最后一次执行结束后，如果刚好<code>k==right</code>，执行递增<code>run[count] = k</code>，表示发现一组有序序列，索引是<code>*</code>到<code>right-1</code>；下一次循环条件<code>k&lt;right</code>不满足，for循环退出。但实际上，数组元素<code>a[right]</code>是由一个元素组成的有序序列，因对应<code>run</code>数组末尾需要添加一个值为<code>right+1</code>的元素</p>
+</blockquote>
+<h3 id="归并算法"><a href="#归并算法" class="headerlink" title="归并算法"></a>归并算法</h3><p>归并算法空间复杂度为O(n)，即必须有和待排序数组等大的辅助数组空间。入参的<code>work</code>变量就是用作辅助数组，数组可用空间可以不从0索引开始，但必须连续；<code>workBase</code>表示起始地址，<code>workLen</code>表示可用长度。传入的工作数组可能为空，此时可以自己创建一个。</p>
+<p><code>sort</code>方法没有返回值，所以我们希望归并结束时，刚好数据由辅助数组复制到原数组。因此需要根据有序子序列个数计算出需要归并的次数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">byte</span> odd = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> n = <span class="number">1</span>; (n &lt;&lt;= <span class="number">1</span>) &lt; count; odd ^= <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>当<code>odd==1</code>，即<code>n</code>左移2<sup>k</sup>+1次，需要归并奇数次，第一次归并应从辅助数组到原数组；反之亦然。源码618~628行即处理这个问题</p>
+<p>源码631~651根据<code>run</code>数组保存的信息执行归并，每轮归并后把新的有序序列信息覆盖到<code>run</code>中保存：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> last; count &gt; <span class="number">1</span>; count = last) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> k = (last = <span class="number">0</span>) + <span class="number">2</span>; k &lt;= count; k += <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> hi = run[k], mi = run[k - <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = run[k - <span class="number">2</span>], p = i, q = mi; i &lt; hi; ++i) &#123;</span><br><span class="line">            <span class="keyword">if</span> (q &gt;= hi || p &lt; mi &amp;&amp; a[p + ao] &lt;= a[q + ao]) &#123;</span><br><span class="line">                b[i + bo] = a[p++ + ao];</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                b[i + bo] = a[q++ + ao];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        run[++last] = hi;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ((count &amp; <span class="number">1</span>) != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = right, lo = run[count - <span class="number">1</span>]; --i &gt;= lo;</span><br><span class="line">            b[i + bo] = a[i + ao]</span><br><span class="line">        );</span><br><span class="line">        run[++last] = right;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">long</span>[] t = a; a = b; b = t;</span><br><span class="line">    <span class="keyword">int</span> o = ao; ao = bo; bo = o;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里有几个需要注意的点：由于归并后子序列数量减半，实际上<code>run</code>的后1/2空间还保存着原有的子序列信息，但for循环通过<code>count</code>确定循环边界，所以每次归并结束只要更新<code>count</code>即可；若本轮<code>count</code>为奇数，则最后一个有序序列需要原样复制到目标数组中</p>
+<h2 id="Quick-Sort"><a href="#Quick-Sort" class="headerlink" title="Quick Sort"></a>Quick Sort</h2><p>当数组长度小于QUICKSORT_THRESHOLD或上文列举的其他合适情况时，private的排序方法<code>sort(int[] a, int left, int right, boolean leftmost)</code>被调用</p>
+<p>该方法大致有四种排序逻辑：insertion sort，pair insertion sort，quick sort，dual pivot quick sort。前两种用于待排序数组长度小于INSERTION_SORT_THRESHOLD的情况，后两种相反。由于快排是递归排序，实际在排序的最后阶段是由插入排序完成的。</p>
+<h3 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h3><p><code>leftmost</code>参数，顾名思义，待排序子序列是否在数组最左侧。<code>leftmost</code>为<code>true</code>时，使用传统的插入排序（这里不再展开描述），否则使用pair insertion sort。</p>
+<p>分析代码，在方法触发快排逻辑后，得到被<em>枢</em>分隔开的2或3个子序列排序，随后执行递归，只有非最左侧的子序列递归方法入参<code>leftmost</code>为<code>false</code>，其余所有情况都为<code>true</code>。因此根据快排的性质可以确定，当<code>leftmost</code>为<code>false</code>时，子序列中的所以元素均大于等于其左侧的所有元素，所以其左侧元素均可充当守卫，而不必每轮循环检查索引越界</p>
+<p>pair insertion sort源码在253~274：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (left &gt;= right) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">while</span> (a[++left] &gt;= a[left - <span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> k = left; ++left &lt;= right; k = ++left) &#123;</span><br><span class="line">    <span class="keyword">int</span> a1 = a[k], a2 = a[left];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (a1 &lt; a2) &#123;</span><br><span class="line">        a2 = a1; a1 = a[left];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (a1 &lt; a[--k]) &#123;</span><br><span class="line">        a[k + <span class="number">2</span>] = a[k];</span><br><span class="line">    &#125;</span><br><span class="line">    a[++k + <span class="number">1</span>] = a1;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (a2 &lt; a[--k]) &#123;</span><br><span class="line">        a[k + <span class="number">1</span>] = a[k];</span><br><span class="line">    &#125;</span><br><span class="line">    a[k + <span class="number">1</span>] = a2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> last = a[right];</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (last &lt; a[--right]) &#123;</span><br><span class="line">    a[right + <span class="number">1</span>] = a[right];</span><br><span class="line">&#125;</span><br><span class="line">a[right + <span class="number">1</span>] = last;</span><br></pre></td></tr></table></figure>
+<p>pair insertion sort改进的思想是，每次取两个元素，先对较大的进行插入排序；当找到插入位置后，由于较小插入位置一定更靠前，所以可以从当前位置继续执行插入排序算法，而不用回到有序序列的尾部重新比较。</p>
+<p>代码在排序开始前<code>do...while</code>跳过了序列开头已有序的部分，同时<code>left++</code>，这是由于上面提到左侧元素可以充当守卫的原因，不再需要<code>left</code>记录待排序序列的起始位置</p>
+<h3 id="双枢轴快排"><a href="#双枢轴快排" class="headerlink" title="双枢轴快排"></a>双枢轴快排</h3><p>当待排序数组长度大于INSERTION_SORT_THRESHOLD，使用快排</p>
+<p>源码279~312行处理枢轴选择逻辑：</p>
+<ul>
+<li>取<code>seventh</code>为待排序序列长度近似1/7，<code>e3</code>为中点索引</li>
+<li>取<code>e3</code>向前向后<code>seventh, 2*seventh</code>长度位置索引，最终得到<code>e1~e5</code></li>
+<li>对<code>e1~e5</code>位置的元素执行插入排序（这里没用for循环，直接手写完整插入排序，简直太暴力了）</li>
+<li>判等，当<code>e1~e5</code>均不想等时，取<code>e2 e4</code>为枢，执行dual pivot quick sort；否则取<code>e3</code>为枢，执行普通快排（这里不在详细描述）</li>
+</ul>
+<p>双枢轴快排原理如下：</p>
+<ul>
+<li>快排需要两个枢<code>pivot1</code>和<code>pivot2</code>，三个指针(索引)<code>less k great</code>，三个指针将数组分为四个部分，参考源码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* Partitioning:</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*   left part           center part                   right part</span></span><br><span class="line"><span class="comment">* +--------------------------------------------------------------+</span></span><br><span class="line"><span class="comment">* |  &lt; pivot1  |  pivot1 &lt;= &amp;&amp; &lt;= pivot2  |    ?    |  &gt; pivot2  |</span></span><br><span class="line"><span class="comment">* +--------------------------------------------------------------+</span></span><br><span class="line"><span class="comment">*               ^                          ^       ^</span></span><br><span class="line"><span class="comment">*               |                          |       |</span></span><br><span class="line"><span class="comment">*              less                        k     great</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* Invariants:</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*              all in (left, less)   &lt; pivot1</span></span><br><span class="line"><span class="comment">*    pivot1 &lt;= all in [less, k)     &lt;= pivot2</span></span><br><span class="line"><span class="comment">*              all in (great, right) &gt; pivot2</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">outer:</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> k = less - <span class="number">1</span>; ++k &lt;= great; ) &#123;</span><br><span class="line">    <span class="keyword">int</span> ak = a[k];</span><br><span class="line">    <span class="keyword">if</span> (ak &lt; pivot1) &#123; <span class="comment">// Move a[k] to left part</span></span><br><span class="line">        a[k] = a[less];</span><br><span class="line">        a[less] = ak;</span><br><span class="line">        ++less;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ak &gt; pivot2) &#123; <span class="comment">// Move a[k] to right part</span></span><br><span class="line">        <span class="keyword">while</span> (a[great] &gt; pivot2) &#123;</span><br><span class="line">            <span class="keyword">if</span> (great-- == k) &#123;</span><br><span class="line">                <span class="keyword">break</span> outer;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (a[great] &lt; pivot1) &#123; <span class="comment">// a[great] &lt;= pivot2</span></span><br><span class="line">            a[k] = a[less];</span><br><span class="line">            a[less] = a[great];</span><br><span class="line">            ++less;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123; <span class="comment">// pivot1 &lt;= a[great] &lt;= pivot2</span></span><br><span class="line">            a[k] = a[great];</span><br><span class="line">        &#125;</span><br><span class="line">        a[great] = ak;</span><br><span class="line">        --great;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>排序开始前，<code>less</code>从<code>left</code>开始向右移动，跳过<code>&lt;pivot1</code>的元素；同理<code>great</code>向左跳过<br>注意边界情况，<code>less</code>指示的是center part的起始位置，即<code>pivot1&lt;=a[less]&lt;=pivot2</code></p>
+</blockquote>
+<ul>
+<li>初始<code>k</code>等于<code>less</code>，即center part长度为0；<code>k</code>和<code>great</code>之间的元素即为待排序元素；当<code>k==great</code>本轮快排结束</li>
+<li><code>k</code>指示的值有三种情况：<ul>
+<li><code>pivot1 &lt;= a[k] &lt;= pivot2</code>：<code>a[k]</code>属于center part，只需执行<code>k++</code></li>
+<li><code>a[k]&lt;pivot1</code>：<code>a[k]</code>属于left part，<code>a[less]</code>和<code>a[k]</code>交换，执行<code>less++, k++</code></li>
+<li><code>a[k]&gt;pivot2</code>：<code>a[k]</code>属于right part，此时情况有些复杂。首先将<code>great</code>向左移动，找到一个<code>a[great]&lt;=pivot2</code>的元素，分两种情况：<ul>
+<li><code>pivot1&lt;=a[great]&lt;=pivot2</code>，则交换<code>a[k]</code>和<code>a[great]</code>即可，然后<code>k++, great--</code></li>
+<li><code>a[great]&lt;pivot1</code>，首先<code>a[great]</code>赋值给<code>a[less]</code>，扩展left part区<code>less++</code>；<code>a[less]</code>原值赋给<code>a[k]</code>，<code>k++</code>相当于center part向右平移一个单位；<code>a[k]</code>原值赋给<code>a[great]</code>，<code>great--</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>快排结束后，递归调用<code>sort</code>对子序列排序</li>
+</ul>
+<p>源码中递归前，对于center part进行了特殊处理——判断<code>less &lt; e1 &amp;&amp; e5 &lt; great</code>值，若该值为<code>true</code>则center part长度是否超出原数组长度4/7<br>理论上通过上述枢轴选择策略，<code>pivot1 pivot2</code>应当将原数组分割为基本相等的三份，如果center part较大，则问题很可能出现在边界条件<code>=</code>上，即center part中有大量相等元素。可以通过排除与<code>pivot1</code>和<code>pivot2</code>相等的元素，大幅减少center part中需要排序的长度。这部分算法可以看作变形版的快排，参考源码注释：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* Partitioning:</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*   left part         center part                  right part</span></span><br><span class="line"><span class="comment">* +----------------------------------------------------------+</span></span><br><span class="line"><span class="comment">* | == pivot1 |  pivot1 &lt; &amp;&amp; &lt; pivot2  |    ?    | == pivot2 |</span></span><br><span class="line"><span class="comment">* +----------------------------------------------------------+</span></span><br><span class="line"><span class="comment">*              ^                        ^       ^</span></span><br><span class="line"><span class="comment">*              |                        |       |</span></span><br><span class="line"><span class="comment">*             less                      k     great</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* Invariants:</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*              all in (*,  less) == pivot1</span></span><br><span class="line"><span class="comment">*     pivot1 &lt; all in [less,  k)  &lt; pivot2</span></span><br><span class="line"><span class="comment">*              all in (great, *) == pivot2</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>随后只对[less, k-1]递归即可</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>TimSort算法更神奇，有时间也写一下</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/源码/" rel="tag"># 源码</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/20/找出第n大的数/" rel="next" title="找出第n大的数">
+                <i class="fa fa-chevron-left"></i> 找出第n大的数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="Crazy Rookie">
+            
+              <p class="site-author-name" itemprop="name">Crazy Rookie</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Ghamster0" title="GitHub &rarr; https://github.com/Ghamster0" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="/xyty2012@outlook.com" title="E-Mail &rarr; xyty2012@outlook.com"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/initial-75" title="知乎 &rarr; https://www.zhihu.com/people/initial-75" rel="noopener" target="_blank"><i class="fa fa-fw fa-book"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#DualPivotQuicksort-类"><span class="nav-number">1.</span> <span class="nav-text">DualPivotQuicksort 类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Merge-Sort"><span class="nav-number">2.</span> <span class="nav-text">Merge Sort</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#有序性判定"><span class="nav-number">2.1.</span> <span class="nav-text">有序性判定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#归并算法"><span class="nav-number">2.2.</span> <span class="nav-text">归并算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Sort"><span class="nav-number">3.</span> <span class="nav-text">Quick Sort</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#插入排序"><span class="nav-number">3.1.</span> <span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双枢轴快排"><span class="nav-number">3.2.</span> <span class="nav-text">双枢轴快排</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-number">4.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Crazy Rookie</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '89a8749bb98c4612ca8e',
+    clientSecret: '2a07e38f4612566c82d6865e3bf168da1265cacc',
+    repo: 'Ghamster0.github.io',
+    owner: 'Ghamster0',
+    admin: ['Ghamster0'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
