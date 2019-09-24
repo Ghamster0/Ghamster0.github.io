@@ -150,7 +150,9 @@ for (int last; count > 1; count = last) {
 
 当数组长度小于QUICKSORT_THRESHOLD或上文列举的其他合适情况时，private的排序方法`sort(int[] a, int left, int right, boolean leftmost)`被调用
 
-该方法大致有四种排序逻辑：insertion sort，pair insertion sort，quick sort，dual pivot quick sort。前两种用于待排序数组长度小于INSERTION_SORT_THRESHOLD的情况，后两种相反。由于快排是递归排序，实际在排序的最后阶段是由插入排序完成的。
+该方法大致有四种排序逻辑：insertion sort，pair insertion sort，quick sort，dual pivot quick sort。前两种用于待排序数组长度小于INSERTION_SORT_THRESHOLD的情况，后两种相反。由于快排是递归排序，实际在排序的最后阶段是由插入排序完成的
+
+关于双枢轴快排比传统快排快的原因可以参考：[Why Is Dual-Pivot Quicksort Fast?](https://arxiv.org/pdf/1511.01138.pdf)，概括来说虽然双枢轴快排增加了比较次数同时降低了存储访问次数。由于CPU和存储速度不匹配，性能瓶颈在于存储，所以增加的比较次数影响不大，使双枢更快
 
 ### 插入排序
 
